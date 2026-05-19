@@ -1,0 +1,44 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "posts/**/*.qmd"
+    - "!notes/"
+    - "!drafts/"
+
+website:
+  title: "Building Bioinformatics"
+  description: "Practical notes on software engineering, reproducibility, workflows, and research infrastructure for bioinformatics."
+  site-url: "https://angemerkel.github.io/building-bioinformatics"
+  repo-url: "https://github.com/angemerkel/building-bioinformatics"
+
+  navbar:
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Blog"
+        href: blog.qmd
+      - text: "About"
+        href: about.qmd
+    right:
+      - icon: github
+        href: "https://github.com/angemerkel"
+      - icon: linkedin
+        href: "https://www.linkedin.com/"
+
+  page-footer:
+    left: "© Angelika Merkel"
+    right: "Built with Quarto"
+
+format:
+  html:
+    theme:
+      - cosmo
+      - assets/css/styles.scss
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+
+execute:
+  freeze: auto

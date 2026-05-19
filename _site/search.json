@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Angelika Merkel is a biologist turned bioinformatician, entering the field more than 20 years ago, before “bioinformatics” had fully established itself as a discipline. Over the years, she has worked across genomics, epigenomics, research computing, and FAIR data systems, experiencing first-hand the rise of high-throughput biology, big data, and data science in biomedical research.\nHer interests include reproducible workflows, software engineering practices, workflow automation, and sustainable computational infrastructure for biomedical research."
+  },
+  {
+    "objectID": "about.html#the-author",
+    "href": "about.html#the-author",
+    "title": "About",
+    "section": "",
+    "text": "Angelika Merkel is a biologist turned bioinformatician, entering the field more than 20 years ago, before “bioinformatics” had fully established itself as a discipline. Over the years, she has worked across genomics, epigenomics, research computing, and FAIR data systems, experiencing first-hand the rise of high-throughput biology, big data, and data science in biomedical research.\nHer interests include reproducible workflows, software engineering practices, workflow automation, and sustainable computational infrastructure for biomedical research."
+  },
+  {
+    "objectID": "about.html#this-site",
+    "href": "about.html#this-site",
+    "title": "About",
+    "section": "This site",
+    "text": "This site\nThis site grew out of years of notes, experiments, lessons learned, and practical experience working in research environments, but also from a more recent effort to consciously catch up with areas that had evolved rapidly around software engineering, data science, AI, and modern computational infrastructure.\nIt is my shared space for learning, revisiting fundamentals, going deeper into technologies and practices that are often picked up informally, and reflecting on how bioinformatics continues to evolve at the intersection of biology, data, and engineering. Topics range from workflows and reproducibility to FAIR data, infrastructure, research software engineering, and the everyday realities of computational biology."
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "No matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "building-bioinformatics",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+  }
+]
