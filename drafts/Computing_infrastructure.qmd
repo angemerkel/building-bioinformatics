@@ -1,0 +1,199 @@
+---
+title: "Computing infrastructure & bioinformatic workflows"
+editor: visual
+---
+
+# Bioinformatic workflows & computing infrastructure
+
+When people think about scientific computing infrastructure, they often think first about the compute cluster: CPUs, GPUs, storage capacity. But over the years, especially while running a bioinformatics core facility, I have come to think that the real challenge is not simply compute and store. It is designing an ecosystem where data, workflows, and users all fit together coherently.
+
+The challenge is no longer simply:
+
+> “Can we analyze this dataset?”
+
+but increasingly:
+
+> “Can we build a sustainable, reproducible, scalable ecosystem that allows many analyses, many users, and many projects to coexist efficiently over time?”
+
+A modern bioinformatics core facility is no longer just a collection of Linux servers running analysis pipelines. It increasingly resembles a small scientific platform engineering organization, combining aspects of IT infrastructure, DevOps, software engineering, HPC, data management, scientific consulting and analysis. Unfortunately, many institutional managers still do not realize this and assume all of this can be carried by a team of two or three people.
+
+Here I want to sketch out what I believe is a nesseary practical architecture for a modern bioinformatics core facility and explain how a typical workflow — differential gene expression analysis, from raw sequencing data to final report — fits into that infrastructure.
+
+# Networks - the seperation of concerns
+
+Research computational infrastructure is usually distributed across multiple network segments (VLANs or subnets) to mitigate different traffic, responsibilities, and risks.
+
+This separation is not just about security. It is also about performance and operational stability
+
+![](/assets/images/Network_architecture.png){width="689"}
+
+Any bioinformatic workflow needs to adapt to the constraints of the infrastructure and leaverage optimal perfomance and stability.
+
+## The data path
+
+One common architectural mistake is allowing sequencing data to flow through user desktops.
+
+Large data sets should never follow this path:
+
+```         
+Internet → laptop → project storage
+```
+
+Instead:
+
+```         
+Internet → DMZ transfer node → validated ingest → project storage
+```
+
+The demilitarized zone - or short DMZ, is a neutral sub network that acts as a secure buffer zone facing both the untrusted outside world (internet) and the private institutional network. It is tightly firewall controlled. Here is were Aspera, sftp and even wget/curl transfers should happen (as should checksum validation).
+
+The transfer node acts as a controlled gateway and is connected to the project storage, either directly or via a staging area. The transfer tools have to be run on the node.
+
+**Example ENA sequence download using wget:**
+
+Login to your transfer node
+
+``` bash
+ssh -i \~/.ssh/id_ed25519 username\@transfer01.institute.org
+```
+
+Then
+
+```         
+wget \
+  -P /dmz/ingest/PROJECT_X/ \
+  https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR123/ERR123456/ERR123456_1.fastq.gz
+```
+
+Then:
+
+```         
+md5sum -c checksums.md5
+```
+
+Then:
+
+```         
+rsync -avP \
+  /dmz/ingest/PROJECT_X/ \
+  /data/projects/PROJECT_X/raw/
+```
+
+Data can be extremly hugh, so make sure enough you are using the appropriate transfer protocol and you have anothor space available in the staging area and your project storage.
+
+| Scenario              | Tool   |
+|-----------------------|--------|
+| small references      | wget   |
+| public annotations    | wget   |
+| TB-scale sequencing   | Aspera |
+| collaborator exchange | SFTP   |
+| institutional sync    | rsync  |
+
+| Experiment             | Typical size                   |
+|------------------------|--------------------------------|
+| RNA-seq project        | 100 GB – multiple TB           |
+| WGS cohort             | tens to hundreds of TB         |
+| Imaging                | TB/day possible                |
+| Single-cell multiomics | very large metadata + matrices |
+
+# Persistent storage and scratch
+
+Another important distinction is between persistent storage and temporary compute storage.
+
+Persistent project storage contains raw data (FASTQs), references, metadata, final outputs, reports. This storage is collaborative, backed up, and long-lived. Often, in practise, a further distinction is made between unmutable data such as raw data that have read-only acess and active data such as analysis, results, reports etc that have full read and write access.
+
+On the other hand, compute workflows, generate enormous amounts of temporary data such as alignment intermediates, sorting chunks, caches, decompression artifacts, etc. Writing all of this directly to shared storage can easily overload the filesystem.
+
+The standard solution is to perform heavy intermediate computation on scratch storage that is often attached to the compute nodes for higher performance.
+
+![](/assets/images/Persistent_staorage_and_Scratch_workflow.png)
+
+Note that In practise, during the staging, raw data is temporarily copied to scratch. Here, again login nodes provide acess via mounted project storage and scheduler access. Scratch might be mounted HPC wide and/or attached to the nodes themselfs.
+
+------------------------------------------------------------------------
+
+# Workflow orchestration and reproducibility
+
+In times of the FAIR dogma and ISO certifications a modern bioinformatics facility (or for that matter at some level any decent bioinformatician) should treat workflows as production infrastructure rather than ad-hoc scripts.
+
+For me this means version control, continius integration and develoment (CI/CD), reproducible environments, containers, automated testing and provenance control.
+
+The workflows themselves should be version controlled (e.g. with git)) and live GitLab or lightweight alternatives such as Gitea, while the actual computation is orchestrated through, Slurm, containers and standardized pipelines using workflow managers such as Nextflow or Snakemake.
+
+Both Gitlab and a in-house container registry can be run internally as services connected to job submission point. Alternatively, large opensource repositories exist such as the docker regististry and nf-core for standardized next.
+
+Here is This changes the mindset substantially.
+
+The bioinformatics unit no longer simply “runs analyses”. It maintains a reproducible computational ecosystem.
+
+------------------------------------------------------------------------
+
+# Interactive analysis is changing
+
+One of the biggest architectural shifts in recent years is the move away from “desktop-centric” bioinformatics.
+
+Traditionally, users mounted institutional storage directly onto their laptops or desktops and ran local IDEs connected to remote systems.
+
+Increasingly, institutes instead deploy JupyterHub, RStudio Server, VSCode Server, Open OnDemand inside the infrastructure itself, close to compute and storage. The user then interacts through a browser rather than directly moving data.
+
+This has several advantages:
+
+-   reduced data movement
+
+-   fewer dependency conflicts
+
+-   simpler onboarding
+
+-   improved reproducibility
+
+-   easier security governance
+
+-   lower local hardware requirements
+
+Most importantly, large datasets remain inside the institutional infrastructure.
+
+Only:
+
+-   rendered plots
+
+-   notebook outputs
+
+-   terminal streams
+
+-   reports
+
+cross to the user’s machine.
+
+------------------------------------------------------------------------
+
+# The hidden role of the management network
+
+Users often do not see the management layer, but it is critical. And this is where you have to be friendly with your IT team
+
+The Management VLAN typically contains:
+
+-   authentication systems
+
+-   monitoring
+
+-   logging
+
+-   scheduler controllers
+
+-   configuration management
+
+-   backup orchestration
+
+-   CI/CD services
+
+The management of this layer is often split between traditional IT teams and scientific computing teams. The former often have telecommunication background and support mainly MS, the later come from computational Science often naitivly trained on Linux system. Good communication and interoperability between the teams is crucial as the management layer coordinates and supervises the entire ecosystem in the background. In many ways it functions as the nervous system of the infrastructure.
+
+------------------------------------------------------------------------
+
+# Example: Differential gene expression workflow
+
+Putting this all together, a typical RNA-seq differential expression workflow might look something like this:
+
+![](/assets/images/Example_workflow_gene_expression.png)
+
+------------------------------------------------------------------------

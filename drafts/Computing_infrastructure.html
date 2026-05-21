@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Computing infrastructure &amp; bioinformatic workflows</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Computing_infrastructure_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Computing_infrastructure_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Computing_infrastructure_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Computing_infrastructure_files/libs/quarto-html/popper.min.js"></script>
+<script src="Computing_infrastructure_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Computing_infrastructure_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Computing_infrastructure_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Computing_infrastructure_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Computing_infrastructure_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Computing_infrastructure_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Computing_infrastructure_files/libs/bootstrap/bootstrap-d436d2238eef4137c12a2e848c6c6d17.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Computing infrastructure &amp; bioinformatic workflows</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="bioinformatic-workflows-computing-infrastructure" class="level1">
+<h1>Bioinformatic workflows &amp; computing infrastructure</h1>
+<p>When people think about scientific computing infrastructure, they often think first about the compute cluster: CPUs, GPUs, storage capacity. But over the years, especially while running a bioinformatics core facility, I have come to think that the real challenge is not simply compute and store. It is designing an ecosystem where data, workflows, and users all fit together coherently.</p>
+<p>The challenge is no longer simply:</p>
+<blockquote class="blockquote">
+<p>“Can we analyze this dataset?”</p>
+</blockquote>
+<p>but increasingly:</p>
+<blockquote class="blockquote">
+<p>“Can we build a sustainable, reproducible, scalable ecosystem that allows many analyses, many users, and many projects to coexist efficiently over time?”</p>
+</blockquote>
+<p>A modern bioinformatics core facility is no longer just a collection of Linux servers running analysis pipelines. It increasingly resembles a small scientific platform engineering organization, combining aspects of IT infrastructure, DevOps, software engineering, HPC, data management, scientific consulting and analysis. Unfortunately, many institutional managers still do not realize this and assume all of this can be carried by a team of two or three people.</p>
+<p>Here I want to sketch out what I believe is a nesseary practical architecture for a modern bioinformatics core facility and explain how a typical workflow — differential gene expression analysis, from raw sequencing data to final report — fits into that infrastructure.</p>
+</section>
+<section id="networks---the-seperation-of-concerns" class="level1">
+<h1>Networks - the seperation of concerns</h1>
+<p>Research computational infrastructure is usually distributed across multiple network segments (VLANs or subnets) to mitigate different traffic, responsibilities, and risks.</p>
+<p>This separation is not just about security. It is also about performance and operational stability</p>
+<p><img src="./assets/images/Network_architecture.png" class="img-fluid" width="689"></p>
+<p>Any bioinformatic workflow needs to adapt to the constraints of the infrastructure and leaverage optimal perfomance and stability.</p>
+<section id="the-data-path" class="level2">
+<h2 class="anchored" data-anchor-id="the-data-path">The data path</h2>
+<p>One common architectural mistake is allowing sequencing data to flow through user desktops.</p>
+<p>Large datasets should never follow this path:</p>
+<p>Internet → laptop → project storage</p>
+<p>Instead:</p>
+<p>Internet → DMZ transfer node → validated ingest → project storage</p>
+<p>The demillitarized zone - or short DMZ, is a neutral subnetwork that acts as a secure buffer zone facing both the untrusted outside world (internet) and the private institutional network. It is tightly firewall controlled. Here is were Aspera, sftp and even wget/curl transfers should happen (as should checksum validation). The transfer node acts as a controlled gateway and is connected to the project storage, either directly or via a staging area. The transfer tools have to be run on the node.</p>
+<p>Example ENA sequence download using wget:</p>
+<p>Login to your transfernode</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> <span class="dt">\~</span>/.ssh/id_ed25519 username<span class="dt">\@</span>transfer01.institute.org</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then</p>
+<pre><code>wget \
+  -P /dmz/ingest/PROJECT_X/ \
+  https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR123/ERR123456/ERR123456_1.fastq.gz</code></pre>
+<p>Then:</p>
+<pre><code>md5sum -c checksums.md5</code></pre>
+<p>Then:</p>
+<pre><code>rsync -avP \
+  /dmz/ingest/PROJECT_X/ \
+  /data/projects/PROJECT_X/raw/</code></pre>
+<p>Data can be extremly hugh, so make sure enough you are using the appropriate transfer protocol and you have anothor space available in the staging area and your project storage.</p>
+<p>Examples:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Scenario</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>small references</td>
+<td>wget</td>
+</tr>
+<tr class="even">
+<td>public annotations</td>
+<td>wget</td>
+</tr>
+<tr class="odd">
+<td>TB-scale sequencing</td>
+<td>Aspera</td>
+</tr>
+<tr class="even">
+<td>collaborator exchange</td>
+<td>SFTP</td>
+</tr>
+<tr class="odd">
+<td>institutional sync</td>
+<td>rsync</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="persistent-storage-and-scratch" class="level1">
+<h1>Persistent storage and scratch</h1>
+<p>Another important distinction is between persistent storage and temporary compute storage.</p>
+<p>Persistent project storage contains raw data (FASTQs), references, metadata, final outputs, reports. This storage is collaborative, backed up, and long-lived. Often, in practise, a further distinction is made between unmutable data such as raw data that have read-only acess and active data such as analysis, results, reports etc that have full read and write access.</p>
+<p>On the other hand, compute workflows, generate enormous amounts of temporary data such as alignment intermediates, sorting chunks, caches, decompression artifacts, etc. Writing all of this directly to shared storage can easily overload the filesystem.</p>
+<p>The standard solution is to perform heavy intermediate computation on scratch storage that is often attached to the compute nodes for higher performance.</p>
+<p>Conceptually:</p>
+<pre><code>project data on shared storage (\\raw_data)
+
+  ↓
+
+scratch staging (reference to input files)
+
+  ↓
+
+perform heavy intermediate computation on scratch storage
+
+  ↓
+
+move results back to project storage (\\active_data)</code></pre>
+<p>Note that In practise, during the staging, raw data is temporarily copied to scratch. Here, again login nodes provide acess via mounted project storage and scheduler access. Scratch might be mounted HPC wide and/or attached to the nodes themselfs.</p>
+<hr>
+</section>
+<section id="workflow-orchestration-and-reproducibility" class="level1">
+<h1>Workflow orchestration and reproducibility</h1>
+<p>In times of the FAIR dogma and ISO certifications a modern bioinformatics facility (or for that matter at some level any decent bioinformatician) should treat workflows as production infrastructure rather than ad-hoc scripts.</p>
+<p>For me this means version control, continius integration and develoment (CI/CD), reproducible environments, containers, automated testing and provenance control.</p>
+<p>The workflows themselves should be version controlled (e.g.&nbsp;with git)) and live GitLab or lightweight alternatives such as Gitea, while the actual computation is orchestrated through, Slurm, containers and standardized pipelines using workflow managers such as Nextflow or Snakemake.</p>
+<p>Both Gitlab and a in-house container registry can be run internally as services connected to job submission point. Alternatively, large opensource repositories exist such as the docker regististry and nf-core for standardized next.</p>
+<p>Here is This changes the mindset substantially.</p>
+<p>The bioinformatics unit no longer simply “runs analyses”. It maintains a reproducible computational ecosystem.</p>
+<hr>
+</section>
+<section id="interactive-analysis-is-changing" class="level1">
+<h1>Interactive analysis is changing</h1>
+<p>One of the biggest architectural shifts in recent years is the move away from “desktop-centric” bioinformatics.</p>
+<p>Traditionally, users mounted institutional storage directly onto their laptops or desktops and ran local IDEs connected to remote systems.</p>
+<p>Increasingly, institutes instead deploy:</p>
+<ul>
+<li><p>JupyterHub</p></li>
+<li><p>RStudio Server</p></li>
+<li><p>VSCode Server</p></li>
+<li><p>Open OnDemand</p></li>
+</ul>
+<p>inside the infrastructure itself, close to compute and storage.</p>
+<p>The user then interacts through a browser rather than directly moving data.</p>
+<p>This has several advantages:</p>
+<ul>
+<li><p>reduced data movement</p></li>
+<li><p>fewer dependency conflicts</p></li>
+<li><p>simpler onboarding</p></li>
+<li><p>improved reproducibility</p></li>
+<li><p>easier security governance</p></li>
+<li><p>lower local hardware requirements</p></li>
+</ul>
+<p>Most importantly, large datasets remain inside the institutional infrastructure.</p>
+<p>Only:</p>
+<ul>
+<li><p>rendered plots</p></li>
+<li><p>notebook outputs</p></li>
+<li><p>terminal streams</p></li>
+<li><p>reports</p></li>
+</ul>
+<p>cross to the user’s machine.</p>
+<hr>
+</section>
+<section id="the-hidden-role-of-the-management-network" class="level1">
+<h1>The hidden role of the management network</h1>
+<p>Users often do not see the management layer, but it is critical. And this is where you have to be friendly with your IT team</p>
+<p>The Management VLAN typically contains:</p>
+<ul>
+<li><p>authentication systems</p></li>
+<li><p>monitoring</p></li>
+<li><p>logging</p></li>
+<li><p>scheduler controllers</p></li>
+<li><p>configuration management</p></li>
+<li><p>backup orchestration</p></li>
+<li><p>CI/CD services</p></li>
+</ul>
+<p>The management of this layer is often split between traditional IT teams and scientific computing teams. The former often have telecommunication background and support mainly MS, the later come from computational Science often naitivly trained on Linux system. Good communication and interoperability between the teams is crucial as the management layer coordinates and supervises the entire ecosystem in the background. In many ways it functions as the nervous system of the infrastructure.</p>
+<hr>
+</section>
+<section id="example-differential-gene-expression-workflow" class="level1">
+<h1>Example: differential gene expression workflow</h1>
+<p>Putting this all together, a typical RNA-seq differential expression workflow might look something like this:</p>
+<p>Public repository / GitLab</p>
+<p>↓</p>
+<p>Pipeline validated via CI/CD</p>
+<p>↓</p>
+<p>Data downloaded through DMZ transfer node</p>
+<p>↓</p>
+<p>FASTQs stored on project storage</p>
+<p>↓</p>
+<p>Nextflow launches jobs via Slurm</p>
+<p>↓</p>
+<p>Inputs staged to scratch</p>
+<p>↓</p>
+<p>Alignment / counting / DESeq2</p>
+<p>↓</p>
+<p>MultiQC aggregation</p>
+<p>↓</p>
+<p>Results published back to project storage</p>
+<p>↓</p>
+<p>Interactive exploration through RStudio/Jupyter</p>
+<p>↓</p>
+<p>Final Quarto/RMarkdown report</p>
+<p>At this point the infrastructure itself starts becoming part of the scientific methodology.</p>
+<hr>
+</section>
+<section id="cloud-and-hybrid-futures" class="level1">
+<h1>Cloud and hybrid futures</h1>
+<p>An interesting aspect is that modern workflow-centric architectures are becoming increasingly portable between:</p>
+<ul>
+<li><p>on-prem HPC</p></li>
+<li><p>AWS</p></li>
+<li><p>Azure</p></li>
+<li><p>Kubernetes</p></li>
+<li><p>hybrid infrastructures</p></li>
+</ul>
+<p>The combination of:</p>
+<ul>
+<li><p>containers</p></li>
+<li><p>Nextflow</p></li>
+<li><p>object storage</p></li>
+<li><p>infrastructure-as-code</p></li>
+</ul>
+<p>makes workflows much less tied to specific hardware.</p>
+<p>I suspect many institutes will converge toward hybrid models:</p>
+<ul>
+<li><p>stable routine workloads on-prem</p></li>
+<li><p>burst scaling and AI/ML workloads in cloud environments</p></li>
+</ul>
+<p>especially as GPU demand continues to grow.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
