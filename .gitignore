@@ -1,6 +1,12 @@
+# R stuff
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 
-/.quarto/
+
+# Quarto cache
+_freeze/
+
+# Quarto temporary files
+.quarto/
