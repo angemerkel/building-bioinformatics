@@ -1,11 +1,12 @@
 project:
   type: website
-  output-dir: _site
+  output-dir: docs
   render:
     - "*.qmd"
     - "posts/**/*.qmd"
     - "!notes/"
     - "!drafts/"
+
 
 website:
   title: "Building Bioinformatics"
