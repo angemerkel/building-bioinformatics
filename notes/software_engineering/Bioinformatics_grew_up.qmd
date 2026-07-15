@@ -1,0 +1,34 @@
+---
+title: "Bioinformatics grew up"
+editor: visual
+---
+
+# **Building Bioinformatics**
+
+*The Bioinformatician's Expanding Job Description or Why the Hard Part isn't Coding Anymore*
+
+like most people of my gemeration I didnt train to become a bioinformaticain, I learnde most of my skills on the job mostly whily trying to resolve some immidiate research question. when I started my PhD, almost two decades ago, bioinformatics was barly a discipline with no difened degrees or established carreer path. people came from biology, physics, statistics, computer scientics and picked up what had to when they had to.
+
+Today students are much better prepared with dedicted degree involving courses on .. . Nevertheless, history and experience have shown as a molecual that as technolgy evolve the role of a bioinforamtician is ever expanding. And although bioinformatics skill set appears to be set we are experience in new shift - towards engineering and systems thinking
+
+***Bioinformatics grew up, and I grew with it.***
+
+I started of as I molecular biologist in a population genomics lab when the genomics revulation started. Data had become to vast to be analysed manually and required computational analysis
+
+I staretd with r Linux, programming, sistems administration.
+
+when the genomcis ngs high-throuput sequencing revolution, specilzed algorithms/tools were developed
+
+with the technological devekpopmentand the bottleneck shifted from producing data to analysizing data. Scripts became pipelines, pipelines beacame workflows, descktop computing shifted to HPC, excels do databases. At the same time projects became more collaborative, collaborations became consortia. Standardization became important, FAIR data appeared. Reproducablity became apparent, version control, documentation a need. Sofwtare deveolpment became a valuable skill. data grew vast and noisy, statiscal methods were key. technology diversied and complex ontgrations were developed. wet lab became dry lab. machoine learning increaingly became paert of the reportiore. Bioinformatics professionakist
+
+today students are much better prepared. the and still a new gap is appearing, one this likely to be aplified by the increasing use of AI. a shift towards building system.
+
+from data analysis to computational biology
+
+Bioinformatics profiles
+
+bioinformatics is classically view to sit at the intersection of biology, statistics and computer science. But
+
+\<venn diagramm\>
+
+Shifting the skill gap

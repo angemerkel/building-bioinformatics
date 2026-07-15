@@ -53,7 +53,7 @@ The demilitarized zone - or DMZ for short - is a neutral sub network that acts a
 
 The transfer node acts as a controlled gateway and is connected to the project storage, either directly or via a staging area. The transfer tools themselves should be run on the node.
 
-Here an example ENA sequence download using `wget`:
+As an illustration, here an example sequence download from the European Nucleotide Archive (ENA) using `wget`:
 
 Login to transfer node
 
