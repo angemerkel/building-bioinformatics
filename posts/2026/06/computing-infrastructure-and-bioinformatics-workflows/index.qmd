@@ -1,6 +1,12 @@
 ---
 title: "Computing infrastructure & bioinformatic workflows"
-editor: visual
+subtitle: ""
+date: 2026-07-16
+author: "Angelika Merkel"
+categories:
+  - Bioinformatics
+  - Software Engineering
+draft: true
 ---
 
 # Computing infrastructure & bioinformatics workflows
@@ -27,7 +33,7 @@ Research computing infrastructure is usually distributed across multiple network
 
 This separation is not just about security. It is also about performance and operational stability.
 
-![](/assets/images/Network_architecture_2.png)
+![](/images/Network_architecture.png)
 
 Any bioinformatic workflow needs to adapt to the constraints of the infrastructure and leverage optimal performance and stability.
 

@@ -1,11 +1,28 @@
 ---
-title: "building-bioinformatics"
+title: "Building Bioinformatics"
+subtitle: "Practical notes on software, reproducibility, workflows, and research infrastructure"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  max-items: 3
+  fields: [date, title, description, categories]
 ---
 
-This is a Quarto website.
+# Building Bioinformatics
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+## Practical notes on software, reproducibility, workflows, and research infrastructure
 
-```{r}
-1 + 1
-```
+------------------------------------------------------------------------
+
+Bioinformatics is no longer only about analysing biological data. It increasingly involves building and maintaining the workflows, software, infrastructure, and data systems that make modern research possible.
+
+*Building Bioinformatics* explores this practical and engineering side of computational biology. The site brings together notes, tutorials, lessons learned, and reflections on topics including reproducible workflows, research software engineering, HPC, FAIR data, project organisation, and the growing role of machine learning and AI.
+
+The focus is not only on individual tools, but on how the different parts fit together—and how we can create computational research environments that are useful, maintainable, and sustainable.
+
+## Latest posts
+
+::: {.content-visible when-format="html"}
+Explore the latest articles on the [Blog](https://angemerkel.github.io/building-bioinformatics/).
+:::

@@ -21,8 +21,7 @@ building-bioinformatics/
 ├── about.qmd
 ├── blog.qmd
 ├── notes/          # ideas, references, rough notes
-├── drafts/         # work in progress
-├── posts/          # published articles
+├── posts/          # drafts and finished articles
 ├── assets/
 │   ├── images/
 │   └── css/
@@ -34,7 +33,7 @@ building-bioinformatics/
 
 Most of the posts start life as notes. Initial ideas, references, diagrams, and rough thoughts go into the `notes/` folder. When a topic starts taking shape, it gets moved into `drafts/`. Once a post is ready for publication, I move it to `posts/` and it becomes part of the website.
 
-The goal is to keep the thinking, drafting, and publishing stages separate while tracking everything in Git.
+The idea is to keep the thinking, drafting, and publishing stages separate while tracking everything in Git.
 
 ## Local Development
 

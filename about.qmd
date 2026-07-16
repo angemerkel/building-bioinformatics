@@ -1,15 +1,19 @@
 ---
 title: "About"
 ---
+# The author
 
-## The author
+I'm Angelika Merkel, a biologist who moved into bioinformatics almost two decades ago, before the field had defined training paths or clear professional roles.
 
-Angelika Merkel is a biologist turned bioinformatician, entering the field more than 20 years ago, before “bioinformatics” had fully established itself as a discipline. Over the years, she has worked across genomics, epigenomics, research computing, and FAIR data systems, experiencing first-hand the rise of high-throughput biology, big data, and data science in biomedical research.
+My work has taken me through genomics, epigenomics, large collaborative research projects, research computing, and eventually the leadership of a bioinformatics facility. Along the way, my view of bioinformatics changed considerably. Scientific analysis still matters, but so do the systems around it: how projects are organised, how data moves, how workflows are designed and maintained, how results remain reproducible, and how technical decisions affect research and the people doing it.
 
-Her interests include reproducible workflows, software engineering practices, workflow automation, and sustainable computational infrastructure for biomedical research.
+Much of my work has involved connecting these different layers—biology, data, software, infrastructure, and, most importantly, the needs of researchers and clinicians. That is the perspective from which I write this site.
 
 ## This site
 
-This site grew out of years of notes, experiments, lessons learned, and practical experience working in research environments, but also from a more recent effort to consciously catch up with areas that had evolved rapidly around software engineering, data science, AI, and modern computational infrastructure.
+*Building Bioinformatics* is a place to examine the practical and engineering side of computational biology in more depth.
 
-It is my shared space for learning, revisiting fundamentals, going deeper into technologies and practices that are often picked up informally, and reflecting on how bioinformatics continues to evolve at the intersection of biology, data, and engineering. Topics range from workflows and reproducibility to FAIR data, infrastructure, research software engineering, and the everyday realities of computational biology.
+I use it to revisit fundamentals, document what I am learning, and explore practices that are often picked up informally: software engineering, reproducible workflows, research data management, FAIR systems, computational infrastructure, and the growing role of machine learning and AI.
+
+The focus is not only on individual tools, but on how the different parts fit together and how we can build computational research environments that are useful, maintainable, and sustainable.
+#

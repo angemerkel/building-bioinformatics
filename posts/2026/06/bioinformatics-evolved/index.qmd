@@ -1,13 +1,19 @@
 ---
-title: "Bioinformatics grew up"
-editor: visual
+title: "Bioinformatics Evolved and I Evolved With It."
+subtitle: "Bioinformatics learned to code. Now it needs to learn engineering."
+date: 2026-07-16
+author: "Angelika Merkel"
+categories:
+  - Bioinformatics
+  - Software Engineering
+draft: true
 ---
 
 # **Building Bioinformatics**
 
 *The Bioinformatician's Expanding Job Description or Why the Hard Part isn't Coding Anymore*
 
-like most people of my gemeration I didnt train to become a bioinformaticain, I learnde most of my skills on the job mostly whily trying to resolve some immidiate research question. when I started my PhD, almost two decades ago, bioinformatics was barly a discipline with no difened degrees or established carreer path. people came from biology, physics, statistics, computer scientics and picked up what had to when they had to.
+like most people of my generation I did not train to become a bioinformaticain, I learnde most of my skills on the job mostly whily trying to resolve some immidiate research question. when I started my PhD, almost two decades ago, bioinformatics was barly a discipline with no difened degrees or established carreer path. people came from biology, physics, statistics, computer scientics and picked up what had to when they had to.
 
 Today students are much better prepared with dedicted degree involving courses on .. . Nevertheless, history and experience have shown as a molecual that as technolgy evolve the role of a bioinforamtician is ever expanding. And although bioinformatics skill set appears to be set we are experience in new shift - towards engineering and systems thinking
 

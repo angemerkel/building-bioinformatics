@@ -5,7 +5,6 @@ project:
     - "*.qmd"
     - "posts/**/*.qmd"
     - "!notes/"
-    - "!drafts/"
 
 
 website:
@@ -30,13 +29,13 @@ website:
 
   page-footer:
     left: "© Angelika Merkel"
-    right: "Built with Quarto"
+    right: "Build with Quarto"
 
 format:
   html:
     theme:
       - cosmo
-      - assets/css/styles.scss
+      - assets/css/styles.css
     toc: true
     code-copy: true
     code-overflow: wrap
