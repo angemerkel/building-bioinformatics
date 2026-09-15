@@ -1,6 +1,8 @@
 ---
-title: "Bioinformatics Evolved and I Evolved With It."
-subtitle: "Bioinformatics learned to code. Now it needs to learn engineering."
+title: "The Bioinformatician's Expanding Job Description"
+subtitle: "Why the hard part isn't coding anymore."
+description: "From analysing data to building systems: how bioinformatics evolved over the last two decades and why engineering and systems thinking are becoming essential skills."
+
 date: 2026-07-16
 author: "Angelika Merkel"
 categories:

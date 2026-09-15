@@ -1,11 +1,13 @@
 ---
-title: "Computing infrastructure & bioinformatic workflows"
-subtitle: ""
+title: "A Bioinformatics Core Is More Than a Cluster"
+subtitle: "The real challenge is building a sustainable bioinformatics ecosystem."
+description: "A practical look at the infrastructure behind modern bioinformatics, from data ingestion and storage to workflow orchestration, reproducibility, and platform engineering."
 date: 2026-07-16
 author: "Angelika Merkel"
 categories:
   - Bioinformatics
-  - Software Engineering
+  - Research Computing
+  - Infrastructure
 draft: true
 ---
 
