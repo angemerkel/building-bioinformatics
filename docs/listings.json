@@ -1,6 +1,14 @@
 [
   {
     "listing": "/blog.html",
-    "items": []
+    "items": [
+      "/posts/2026/06/bioinformatics-evolved/index.html"
+    ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/2026/06/bioinformatics-evolved/index.html"
+    ]
   }
 ]

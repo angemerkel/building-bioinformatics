@@ -2,16 +2,16 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "building-bioinformatics",
+    "title": "Building Bioinformatics",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "Bioinformatics has long since become more than just analysing biological data. Building and maintaining workflows, software, infrastructure, and data systems is now an integral part of the discipline and of modern computational research.\nBuilding Bioinformatics is where I explore this side of computational biology: the engineering behind the analysis. It is a place to put into writing things I have observed or been thinking about, revisit things I have learned along the way, and go deeper into topics I want to understand better.\nThe idea is not to focus only on individual tools, but on understanding how the different pieces fit together — and how to build computational research environments that are useful, reproducible, maintainable, and sustainable."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Angelika Merkel is a biologist turned bioinformatician, entering the field more than 20 years ago, before “bioinformatics” had fully established itself as a discipline. Over the years, she has worked across genomics, epigenomics, research computing, and FAIR data systems, experiencing first-hand the rise of high-throughput biology, big data, and data science in biomedical research.\nHer interests include reproducible workflows, software engineering practices, workflow automation, and sustainable computational infrastructure for biomedical research."
+    "text": "I’m Angelika Merkel, a biologist who moved into bioinformatics around two decades ago, when the field had neither defined training paths nor clear professional roles.\nMy career has taken me through genomics, epigenomics, large collaborative research projects, research computing, and eventually the leadership of a bioinformatics facility. Over that time, the work itself changed. What started largely with analysing biological data gradually expanded to include developing workflows and software, managing increasingly complex data, working with computational infrastructure, and thinking about reproducibility and how all these different parts fit together.\nLooking back, this evolution in my own work reflected a broader change in bioinformatics. Scientific analysis is still at its core, but the systems around it have changed and are now just as important: how projects are organised, how data moves, how workflows are designed and maintained, how results remain reproducible, and how technical decisions affect research and the people doing it.\nMuch of my more recent work has involved connecting these different layers — biology, data, software, infrastructure, and, most importantly, the needs of researchers and clinicians. It is these connections that have shaped how I see bioinformatics today.\n\n\nBuilding Bioinformatics is my attempt to put into writing things I have observed, experienced, or been thinking about over the years, as well as topics I am simply curious about and want to understand better.\nI use the site to revisit things I learned along the way, catch up with areas that have evolved, and go deeper into topics that I previously encountered mainly while solving a particular problem. Writing about them is also a way of getting these thoughts out of my head, organising them, and understanding more clearly how the different pieces fit together.\nThe topics naturally reflect the practical and engineering side of bioinformatics: software engineering, reproducible workflows, research data management, FAIR systems, computational infrastructure, and the connections between them.\nSome of this is based on experience, some of it is learning and revisiting, and some of it is simply trying to understand better how modern bioinformatics works as a whole."
   },
   {
     "objectID": "about.html#the-author",
@@ -24,14 +24,105 @@
     "objectID": "about.html#this-site",
     "href": "about.html#this-site",
     "title": "About",
-    "section": "This site",
-    "text": "This site\nThis site grew out of years of notes, experiments, lessons learned, and practical experience working in research environments, but also from a more recent effort to consciously catch up with areas that had evolved rapidly around software engineering, data science, AI, and modern computational infrastructure.\nIt is my shared space for learning, revisiting fundamentals, going deeper into technologies and practices that are often picked up informally, and reflecting on how bioinformatics continues to evolve at the intersection of biology, data, and engineering. Topics range from workflows and reproducibility to FAIR data, infrastructure, research software engineering, and the everyday realities of computational biology."
+    "section": "",
+    "text": "Building Bioinformatics is my attempt to put into writing things I have observed, experienced, or been thinking about over the years, as well as topics I am simply curious about and want to understand better.\nI use the site to revisit things I learned along the way, catch up with areas that have evolved, and go deeper into topics that I previously encountered mainly while solving a particular problem. Writing about them is also a way of getting these thoughts out of my head, organising them, and understanding more clearly how the different pieces fit together.\nThe topics naturally reflect the practical and engineering side of bioinformatics: software engineering, reproducible workflows, research data management, FAIR systems, computational infrastructure, and the connections between them.\nSome of this is based on experience, some of it is learning and revisiting, and some of it is simply trying to understand better how modern bioinformatics works as a whole."
   },
   {
     "objectID": "blog.html",
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "No matching items"
+    "text": "How We Got from Scripts to Systems\n\n\nThe changing skill set of the bioinformatician\n\n\n\nBioinformatics\n\nSoftware Engineering\n\nResearch Computing\n\n\n\nFrom analysing new types of sequencing data to building workflows and computational systems: how the work of the bioinformatician has changed over the last two decades.\n\n\n\n\n\nJul 16, 2026\n\n\nAngelika Merkel\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html#latest-posts",
+    "href": "index.html#latest-posts",
+    "title": "Building Bioinformatics",
+    "section": "Latest posts",
+    "text": "Latest posts"
+  },
+  {
+    "objectID": "about.html#title-about",
+    "href": "about.html#title-about",
+    "title": "The author",
+    "section": "title: “About”",
+    "text": "title: “About”"
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html",
+    "title": "How We Got from Scripts to Systems",
+    "section": "",
+    "text": "Like many bioinformaticians of my generation, I did not train to become one. I trained as a molecular biologist and acquired most of my computational skills while trying to solve actual research problems.\nWhen I started my PhD in 2005, bioinformatics was already an established discipline. Its roots reach back to the first computational analyses of protein sequences in the 1960s (Gauthier et al. 2019). But formal bioinformatics degrees and clearly defined career paths were much less common than they are today. Many of us came from biology, computer science, physics, mathematics or statistics and learned what we needed as we went along.\nI came from molecular biology.\nDuring my PhD, I studied microsatellite evolution in yeast in a population genomics lab. I started by using Visual Basic to automate tasks in Excel. When the spreadsheets could no longer hold the data and the statistics became more complex, I moved to R. As the computational side of the project grew further, I learned Perl.\nThere was no grand plan behind this progression. The problem changed, the limitations of the current approach became apparent, and another skill was added.\nLooking back, this seems to me a useful way of thinking about the development of bioinformatics itself.\nThe field did not move neatly from one set of skills to another. It accumulated them."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#draft-false",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#draft-false",
+    "title": "Building Bioinformatics",
+    "section": "draft: false",
+    "text": "draft: false\nLike many bioinformaticians of my generation, I did not train to become one. I trained as a molecular biologist and acquired most of my computational skills while trying to solve actual research problems.\nWhen I started my PhD in 2005, bioinformatics was already an established discipline. Its roots reach back to the first computational analyses of protein sequences in the 1960s [@gauthier2019]. But formal bioinformatics degrees and clearly defined career paths were much less common than they are today. Many of us came from biology, computer science, physics, mathematics or statistics and learned what we needed as we went along.\nI came from molecular biology.\nDuring my PhD, I studied microsatellite evolution in yeast in a population genomics lab. I started by using Visual Basic to automate tasks in Excel. When the spreadsheets could no longer hold the data and the statistics became more complex, I moved to R. As the computational side of the project grew further, I learned Perl.\nThere was no grand plan behind this progression. The problem changed, the limitations of the current approach became apparent, and another skill was added.\nLooking back, this seems to me a useful way of thinking about the development of bioinformatics itself.\nThe field did not move neatly from one set of skills to another. It accumulated them."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#first-we-had-to-work-out-how-to-analyse-the-data",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#first-we-had-to-work-out-how-to-analyse-the-data",
+    "title": "How We Got from Scripts to Systems",
+    "section": "First, we had to work out how to analyse the data",
+    "text": "First, we had to work out how to analyse the data\nThe completion of the Human Genome Project and the arrival of next-generation sequencing changed genomics profoundly. Suddenly, very large amounts of sequence data could be generated, and new experimental approaches appeared in rapid succession.\nWhen I joined the CRG in 2009, RNA-seq was still new. Experimental protocols were becoming established, and there was not yet a mature analysis workflow that everyone simply followed.\nWe still had to work out how to analyse the data.\nHow should reads be aligned? How should expression be quantified? How should transcript structures be handled? Which differences between samples were biological and which were introduced by the analysis itself?\nToday, many of these questions have relatively established solutions. At the time, they were part of an actively developing methodological landscape. New algorithms and software appeared quickly, and understanding what they did—and where they failed—was an important part of being a bioinformatician.\nI encountered something similar a few years later at CNAG when I started working with whole-genome bisulfite sequencing within BLUEPRINT. Again, both the experimental technology and the computational methods were developing.\nAcross bioinformatics, this period saw rapid development of methods for read alignment, assembly, quantification, variant calling and many other analytical tasks.\nBut as those individual building blocks became more established, the problem began to change.\nKnowing how to perform each step was no longer enough.\nWe also had to make the whole thing run."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#from-scripts-to-workflows",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#from-scripts-to-workflows",
+    "title": "How We Got from Scripts to Systems",
+    "section": "From scripts to workflows",
+    "text": "From scripts to workflows\nA sequencing analysis is rarely one program. Data pass through a chain of tools and transformations before they become something we can interpret biologically.\nFor a while, scripts, Makefiles and manual commands did a perfectly reasonable job of connecting these steps. Many pipelines—including the ones I worked with—were built this way.\nBut increasing scale made the limitations increasingly obvious.\nWhat happens when step eight of a twelve-step analysis fails? Can it restart without repeating the first seven? Which software version produced a result? Which parameters were used? Can another person run the same analysis? Can I run it myself six months later?\nThese sound like engineering questions rather than biological ones. Unfortunately, the biology does not become reliable by ignoring them.\nDuring my time at CRG and CNAG, pipelines therefore became an increasingly important part of the work. GRAPE supported large-scale RNA-seq analysis; later, gemBS provided a structured pipeline for whole-genome bisulfite sequencing.\nThe pipelines I worked with were still largely implemented using Makefiles and Bash scripts. gemBS was experimentally implemented using CWL for ENCODE, while workflow systems such as Snakemake and Nextflow were emerging and would later become much more widely adopted.\nAt the same time, other practices were becoming part of the bioinformatics toolbox. Version control made changes to code traceable. Containers helped deal with software dependencies and portability. R Markdown and Jupyter brought code, results and documentation closer together.\nThe particular technologies matter less than the change they represent.\nOnce the analytical steps were reasonably established, more attention could be given to how they were connected, executed, reproduced and maintained.\nThe analysis was becoming part of a larger computational process."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#from-workflows-to-systems",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#from-workflows-to-systems",
+    "title": "How We Got from Scripts to Systems",
+    "section": "From workflows to systems",
+    "text": "From workflows to systems\nAt a large sequencing centre such as CNAG, that process extends well beyond the bioinformatics pipeline.\nHigh-throughput sequencing is a production environment. Samples, biobanking, laboratory protocols, metadata, sequencing, computational processing and data delivery all have to fit together. A LIMS connects information across that process. Established laboratory protocols and production pipelines make it possible to handle large numbers of samples consistently.\nThis introduces another level of thinking.\nThe question is no longer simply whether an analysis works. It is whether the entire process works repeatedly, reliably and at scale.\nI saw the other side of this problem later when I led a bioinformatics core facility at IJC. Instead of joining an established sequencing environment, my team and I had to build many of these structures ourselves, in a smaller environment supporting heterogeneous research projects.\nSuddenly, metadata capture, project organisation, computational resources, software maintenance, documentation, training and the delivery of results were all part of the problem.\nFor methylation-array projects, for example, we developed an environment in which BioForms captured project and sample information, EPipe automated the analysis, computational resources handled the processing, and MethylationDB provided structured access to results.\nNone of those components alone was the bioinformatics analysis.\nThe useful system emerged from connecting them.\nAnd that, I think, is one of the less obvious changes in bioinformatics over the last two decades. We still analyse biological data. But increasingly we also build and maintain the systems that allow those analyses to happen reliably."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#the-skill-set-accumulated",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#the-skill-set-accumulated",
+    "title": "How We Got from Scripts to Systems",
+    "section": "The skill set accumulated",
+    "text": "The skill set accumulated\nThis is why I find it difficult to describe the evolution of bioinformatics as a succession of technologies or eras.\nIt is better described as an accumulation.\n\n\n\n\n\n\nFigure 1: From scripts to systems: technological milestones and the evolving bioinformatics skill set. Examples are not exhaustive; dates are approximate and technologies overlapped. Based on the technological eras described by Truong and Ritchie (2026).\n\n\n\nBiology did not become less important when programming became important. Programming did not disappear when workflow managers arrived. Statistical genomics remains fundamental even as machine learning becomes more common.\nInstead, the layers accumulated.\nHigh-throughput sequencing required new algorithms and scalable computing. Increasingly complex analyses brought workflow management, version control and software-engineering practices. Reproducibility connected analysis more closely with documentation and data management. Multi-omics, single-cell and spatial technologies created new integration problems. Machine learning and deep learning added another methodological layer (Truong and Ritchie 2026).\nAnd once all these components started interacting, it became increasingly useful to understand the wider computational ecosystem around them.\nThat is the important part of the figure: the earlier skills do not stop when the next one appears.\nThey continue."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#so-what-exactly-is-a-bioinformatician-now",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#so-what-exactly-is-a-bioinformatician-now",
+    "title": "How We Got from Scripts to Systems",
+    "section": "So what exactly is a bioinformatician now?",
+    "text": "So what exactly is a bioinformatician now?\nPut all those skills together and we arrive at a slightly absurd job description.\nMolecular biologist. Statistician. Programmer. Software engineer. Data engineer. Infrastructure specialist. Machine-learning expert.\nPreferably with five years of experience in a technology released three years ago.\nThe point, of course, is not that every bioinformatician should be all of these things.\nAs the field has expanded, specialisation has become necessary. Some bioinformaticians work close to biological interpretation and statistical modelling. Others focus on methods development, scientific software, workflow engineering, research data, computational infrastructure or machine learning.\nPerhaps the real change is that modern bioinformatics depends on all of these capabilities existing somewhere within the team or organisation.\nWe do not all need to do everything. But we increasingly need to understand enough about neighbouring areas to work across their boundaries."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#todays-bioinformaticians-start-somewhere-else",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#todays-bioinformaticians-start-somewhere-else",
+    "title": "How We Got from Scripts to Systems",
+    "section": "Today’s bioinformaticians start somewhere else",
+    "text": "Today’s bioinformaticians start somewhere else\nThe starting point has changed as well.\nA student can now enter a bioinformatics degree and encounter molecular biology, programming, algorithms, databases, biostatistics, computational genomics, machine learning and high-performance computing as part of the formal curriculum (Barcelona School of Informatics, Universitat Politècnica de Catalunya 2026).\nThat is quite different from learning Perl because the problem in front of you has become too large for whatever you were doing before.\nIt is undoubtedly a better starting point.\nBut formal training and experience solve somewhat different problems.\nLearning programming is different from maintaining software that other people depend on. Learning statistics is different from deciding what to do with a difficult experimental dataset. Learning about workflows is different from debugging one after hundreds of samples have already been processed. Learning the principles of reproducibility is different from trying to reproduce an analysis years later when the software, operating system and people involved have all changed.\nSome things are difficult to teach before there is a sufficiently inconvenient real problem attached to them."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#and-now-ai-changes-the-interface-again",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#and-now-ai-changes-the-interface-again",
+    "title": "How We Got from Scripts to Systems",
+    "section": "And now AI changes the interface again",
+    "text": "And now AI changes the interface again\nAnd now we are adding another layer.\nGenerative AI is making computational tools considerably easier to access. Code can be generated from natural-language descriptions. Documentation can be queried conversationally. Unfamiliar libraries can be explored quickly. Increasingly, AI systems can connect tools and execute parts of computational workflows.\nThat will change the skill set again.\nBut easier execution does not necessarily mean easier judgement.\nIs the analysis appropriate for the biological question? Is the generated code correct? Are its assumptions reasonable? Can the result be reproduced and validated? How does the analysis fit into the surrounding computational environment? And what happens when an AI-generated answer looks entirely plausible and is wrong?\nTruong and Ritchie (2026) describe the current shift as one in which scientific intent, verification and computational critical thinking become increasingly important. I think that is a useful way of looking at it.\nAI may reduce the amount of time bioinformaticians spend writing certain kinds of code. It seems much less likely to reduce the need to understand what the analysis is doing or whether the result makes biological sense.\nIf anything, lowering the barrier to producing an analysis may make those questions more important."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#from-scripts-to-systems",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#from-scripts-to-systems",
+    "title": "How We Got from Scripts to Systems",
+    "section": "From scripts to systems",
+    "text": "From scripts to systems\nSo how did we get from scripts to systems?\nNot through one deliberate transition.\nNew biological technologies created new analytical problems. We developed algorithms to solve them. Increasing scale required pipelines and scalable computing. Repeating those analyses made workflow management and reproducibility important. Running them across organisations brought data management, infrastructure and production processes into the picture.\nAnd each new layer remained connected to the ones underneath it.\nThat may be why defining the skill set of the bioinformatician has become so difficult. The field sits at a boundary that keeps moving as biology and technology change.\nThe tools will continue to change.\nUnderstanding the biological problem, knowing enough to judge the analysis, and being able to connect the necessary pieces into something that works may prove rather more durable."
+  },
+  {
+    "objectID": "posts/2026/06/bioinformatics-evolved/index.html#references",
+    "href": "posts/2026/06/bioinformatics-evolved/index.html#references",
+    "title": "Building Bioinformatics",
+    "section": "References",
+    "text": "References"
   }
 ]

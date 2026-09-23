@@ -6,10 +6,9 @@ project:
     - "posts/**/*.qmd"
     - "!notes/"
 
-
 website:
   title: "Building Bioinformatics"
-  description: "Practical notes on software engineering, reproducibility, workflows, and research infrastructure for bioinformatics."
+  description: "Practical notes on bioinformatics, software, reproducibility, workflows, and research infrastructure."
   site-url: "https://angemerkel.github.io/building-bioinformatics"
   repo-url: "https://github.com/angemerkel/building-bioinformatics"
 
@@ -25,18 +24,18 @@ website:
       - icon: github
         href: "https://github.com/angemerkel"
       - icon: linkedin
-        href: "https://www.linkedin.com/"
+        href: "https://www.linkedin.com/in/angelika-merkel-05813085/"
 
   page-footer:
     left: "© Angelika Merkel"
-    right: "Build with Quarto"
+    right: "Built with Quarto"
 
 format:
   html:
     theme:
       - cosmo
-      - assets/css/styles.css
-    toc: true
+    css: assets/css/styles.css
+    toc: false
     code-copy: true
     code-overflow: wrap
 

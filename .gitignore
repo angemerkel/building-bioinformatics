@@ -10,3 +10,4 @@ _freeze/
 
 # Quarto temporary files
 .quarto/
+/.quarto/

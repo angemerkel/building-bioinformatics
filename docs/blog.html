@@ -79,9 +79,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -129,6 +129,7 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="assets/css/styles.css">
 <link rel="alternate" type="application/rss+xml" title="Building Bioinformatics" href="blog.xml" data-external="1"></head>
 
 <body class="nav-fixed quarto-light">
@@ -168,7 +169,7 @@ window.Quarto = {
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/"> <i class="bi bi-linkedin" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/angelika-merkel-05813085/"> <i class="bi bi-linkedin" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -184,8 +185,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(0)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QmlvaW5mb3JtYXRpY3M=">Bioinformatics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVzZWFyY2glMjBDb21wdXRpbmc=">Research Computing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U29mdHdhcmUlMjBFbmdpbmVlcmluZw==">Software Engineering <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -214,7 +214,43 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="QmlvaW5mb3JtYXRpY3MlMkNTb2Z0d2FyZSUyMEVuZ2luZWVyaW5nJTJDUmVzZWFyY2glMjBDb21wdXRpbmc=" data-listing-date-sort="1784152800000" data-listing-file-modified-sort="1790193598522" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1752">
+<div class="thumbnail"><a href="./posts/2026/06/bioinformatics-evolved/index.html" class="no-external">
 
+<p class="card-img-top"><img src="posts/2026/06/bioinformatics-evolved/images/from-scripts-to-systems.png" alt="Timeline showing the evolution of bioinformatics technologies and an accumulating skill set, from genomics and scripting through workflows, infrastructure, machine learning and generative AI."  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/2026/06/bioinformatics-evolved/index.html" class="no-external">How We Got from Scripts to Systems</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/2026/06/bioinformatics-evolved/index.html" class="no-external">The changing skill set of the bioinformatician</a>
+</div>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QmlvaW5mb3JtYXRpY3M='); return false;">Bioinformatics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29mdHdhcmUlMjBFbmdpbmVlcmluZw=='); return false;">Software Engineering</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UmVzZWFyY2glMjBDb21wdXRpbmc='); return false;">Research Computing</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/2026/06/bioinformatics-evolved/index.html" class="no-external">
+<p>From analysing new types of sequencing data to building workflows and computational systems: how the work of the bioinformatician has changed over the last two decades.</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/2026/06/bioinformatics-evolved/index.html" class="no-external">
+<div class="listing-date">
+Jul 16, 2026
+</div>
+<div class="listing-author">
+Angelika Merkel
+</div>
+</a>
+</div>
+</div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
 </div></main> <!-- /main -->

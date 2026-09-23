@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Angelika Merkel">
+<meta name="dcterms.date" content="2026-07-16">
+<meta name="description" content="From analysing new types of sequencing data to building workflows and computational systems: how the work of the bioinformatician has changed over the last two decades.">
+
+<title>How We Got from Scripts to Systems – Building Bioinformatics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<script src="../../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap-5fd4d4dd7f5c1c25d2b4b8146174742e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../../assets/css/styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../../index.html">
+    <span class="navbar-title">Building Bioinformatics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/angemerkel"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/angelika-merkel-05813085/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">How We Got from Scripts to Systems</h1>
+<p class="subtitle lead">The changing skill set of the bioinformatician</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Bioinformatics</div>
+    <div class="quarto-category">Software Engineering</div>
+    <div class="quarto-category">Research Computing</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    From analysing new types of sequencing data to building workflows and computational systems: how the work of the bioinformatician has changed over the last two decades.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Angelika Merkel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 16, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Like many bioinformaticians of my generation, I did not train to become one. I trained as a molecular biologist and acquired most of my computational skills while trying to solve actual research problems.</p>
+<p>When I started my PhD in 2005, bioinformatics was already an established discipline. Its roots reach back to the first computational analyses of protein sequences in the 1960s <span class="citation" data-cites="gauthier2019">(<a href="#ref-gauthier2019" role="doc-biblioref">Gauthier et al. 2019</a>)</span>. But formal bioinformatics degrees and clearly defined career paths were much less common than they are today. Many of us came from biology, computer science, physics, mathematics or statistics and learned what we needed as we went along.</p>
+<p>I came from molecular biology.</p>
+<p>During my PhD, I studied microsatellite evolution in yeast in a population genomics lab. I started by using Visual Basic to automate tasks in Excel. When the spreadsheets could no longer hold the data and the statistics became more complex, I moved to R. As the computational side of the project grew further, I learned Perl.</p>
+<p>There was no grand plan behind this progression. The problem changed, the limitations of the current approach became apparent, and another skill was added.</p>
+<p>Looking back, this seems to me a useful way of thinking about the development of bioinformatics itself.</p>
+<p>The field did not move neatly from one set of skills to another. It accumulated them.</p>
+<section id="first-we-had-to-work-out-how-to-analyse-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="first-we-had-to-work-out-how-to-analyse-the-data">First, we had to work out how to analyse the data</h2>
+<p>The completion of the Human Genome Project and the arrival of next-generation sequencing changed genomics profoundly. Suddenly, very large amounts of sequence data could be generated, and new experimental approaches appeared in rapid succession.</p>
+<p>When I joined the CRG in 2009, RNA-seq was still new. Experimental protocols were becoming established, and there was not yet a mature analysis workflow that everyone simply followed.</p>
+<p>We still had to work out how to analyse the data.</p>
+<p>How should reads be aligned? How should expression be quantified? How should transcript structures be handled? Which differences between samples were biological and which were introduced by the analysis itself?</p>
+<p>Today, many of these questions have relatively established solutions. At the time, they were part of an actively developing methodological landscape. New algorithms and software appeared quickly, and understanding what they did—and where they failed—was an important part of being a bioinformatician.</p>
+<p>I encountered something similar a few years later at CNAG when I started working with whole-genome bisulfite sequencing within BLUEPRINT. Again, both the experimental technology and the computational methods were developing.</p>
+<p>Across bioinformatics, this period saw rapid development of methods for read alignment, assembly, quantification, variant calling and many other analytical tasks.</p>
+<p>But as those individual building blocks became more established, the problem began to change.</p>
+<p>Knowing how to perform each step was no longer enough.</p>
+<p>We also had to make the whole thing run.</p>
+</section>
+<section id="from-scripts-to-workflows" class="level2">
+<h2 class="anchored" data-anchor-id="from-scripts-to-workflows">From scripts to workflows</h2>
+<p>A sequencing analysis is rarely one program. Data pass through a chain of tools and transformations before they become something we can interpret biologically.</p>
+<p>For a while, scripts, Makefiles and manual commands did a perfectly reasonable job of connecting these steps. Many pipelines—including the ones I worked with—were built this way.</p>
+<p>But increasing scale made the limitations increasingly obvious.</p>
+<p>What happens when step eight of a twelve-step analysis fails? Can it restart without repeating the first seven? Which software version produced a result? Which parameters were used? Can another person run the same analysis? Can I run it myself six months later?</p>
+<p>These sound like engineering questions rather than biological ones. Unfortunately, the biology does not become reliable by ignoring them.</p>
+<p>During my time at CRG and CNAG, pipelines therefore became an increasingly important part of the work. GRAPE supported large-scale RNA-seq analysis; later, gemBS provided a structured pipeline for whole-genome bisulfite sequencing.</p>
+<p>The pipelines I worked with were still largely implemented using Makefiles and Bash scripts. gemBS was experimentally implemented using CWL for ENCODE, while workflow systems such as Snakemake and Nextflow were emerging and would later become much more widely adopted.</p>
+<p>At the same time, other practices were becoming part of the bioinformatics toolbox. Version control made changes to code traceable. Containers helped deal with software dependencies and portability. R Markdown and Jupyter brought code, results and documentation closer together.</p>
+<p>The particular technologies matter less than the change they represent.</p>
+<p>Once the analytical steps were reasonably established, more attention could be given to <strong>how they were connected, executed, reproduced and maintained</strong>.</p>
+<p>The analysis was becoming part of a larger computational process.</p>
+</section>
+<section id="from-workflows-to-systems" class="level2">
+<h2 class="anchored" data-anchor-id="from-workflows-to-systems">From workflows to systems</h2>
+<p>At a large sequencing centre such as CNAG, that process extends well beyond the bioinformatics pipeline.</p>
+<p>High-throughput sequencing is a production environment. Samples, biobanking, laboratory protocols, metadata, sequencing, computational processing and data delivery all have to fit together. A LIMS connects information across that process. Established laboratory protocols and production pipelines make it possible to handle large numbers of samples consistently.</p>
+<p>This introduces another level of thinking.</p>
+<p>The question is no longer simply whether an analysis works. It is whether the entire process works repeatedly, reliably and at scale.</p>
+<p>I saw the other side of this problem later when I led a bioinformatics core facility at IJC. Instead of joining an established sequencing environment, my team and I had to build many of these structures ourselves, in a smaller environment supporting heterogeneous research projects.</p>
+<p>Suddenly, metadata capture, project organisation, computational resources, software maintenance, documentation, training and the delivery of results were all part of the problem.</p>
+<p>For methylation-array projects, for example, we developed an environment in which BioForms captured project and sample information, EPipe automated the analysis, computational resources handled the processing, and MethylationDB provided structured access to results.</p>
+<p>None of those components alone was the bioinformatics analysis.</p>
+<p>The useful system emerged from connecting them.</p>
+<p>And that, I think, is one of the less obvious changes in bioinformatics over the last two decades. We still analyse biological data. But increasingly we also build and maintain the systems that allow those analyses to happen reliably.</p>
+</section>
+<section id="the-skill-set-accumulated" class="level2">
+<h2 class="anchored" data-anchor-id="the-skill-set-accumulated">The skill set accumulated</h2>
+<p>This is why I find it difficult to describe the evolution of bioinformatics as a succession of technologies or eras.</p>
+<p>It is better described as an accumulation.</p>
+<div id="fig-scripts-to-systems" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Timeline showing the evolution of bioinformatics technologies and an accumulating skill set, from genomics and scripting through workflows, infrastructure, machine learning and generative AI.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scripts-to-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/from-scripts-to-systems.png" class="img-fluid figure-img" alt="Timeline showing the evolution of bioinformatics technologies and an accumulating skill set, from genomics and scripting through workflows, infrastructure, machine learning and generative AI.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scripts-to-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: From scripts to systems: technological milestones and the evolving bioinformatics skill set. Examples are not exhaustive; dates are approximate and technologies overlapped. Based on the technological eras described by Truong and Ritchie (2026).
+</figcaption>
+</figure>
+</div>
+<p>Biology did not become less important when programming became important. Programming did not disappear when workflow managers arrived. Statistical genomics remains fundamental even as machine learning becomes more common.</p>
+<p>Instead, the layers accumulated.</p>
+<p>High-throughput sequencing required new algorithms and scalable computing. Increasingly complex analyses brought workflow management, version control and software-engineering practices. Reproducibility connected analysis more closely with documentation and data management. Multi-omics, single-cell and spatial technologies created new integration problems. Machine learning and deep learning added another methodological layer <span class="citation" data-cites="truong2026">(<a href="#ref-truong2026" role="doc-biblioref">Truong and Ritchie 2026</a>)</span>.</p>
+<p>And once all these components started interacting, it became increasingly useful to understand the wider computational ecosystem around them.</p>
+<p>That is the important part of the figure: the earlier skills do not stop when the next one appears.</p>
+<p>They continue.</p>
+</section>
+<section id="so-what-exactly-is-a-bioinformatician-now" class="level2">
+<h2 class="anchored" data-anchor-id="so-what-exactly-is-a-bioinformatician-now">So what exactly is a bioinformatician now?</h2>
+<p>Put all those skills together and we arrive at a slightly absurd job description.</p>
+<p>Molecular biologist. Statistician. Programmer. Software engineer. Data engineer. Infrastructure specialist. Machine-learning expert.</p>
+<p>Preferably with five years of experience in a technology released three years ago.</p>
+<p>The point, of course, is not that every bioinformatician should be all of these things.</p>
+<p>As the field has expanded, specialisation has become necessary. Some bioinformaticians work close to biological interpretation and statistical modelling. Others focus on methods development, scientific software, workflow engineering, research data, computational infrastructure or machine learning.</p>
+<p>Perhaps the real change is that modern bioinformatics depends on <strong>all of these capabilities existing somewhere within the team or organisation</strong>.</p>
+<p>We do not all need to do everything. But we increasingly need to understand enough about neighbouring areas to work across their boundaries.</p>
+</section>
+<section id="todays-bioinformaticians-start-somewhere-else" class="level2">
+<h2 class="anchored" data-anchor-id="todays-bioinformaticians-start-somewhere-else">Today’s bioinformaticians start somewhere else</h2>
+<p>The starting point has changed as well.</p>
+<p>A student can now enter a bioinformatics degree and encounter molecular biology, programming, algorithms, databases, biostatistics, computational genomics, machine learning and high-performance computing as part of the formal curriculum <span class="citation" data-cites="upcBioinformaticsCurriculum">(<a href="#ref-upcBioinformaticsCurriculum" role="doc-biblioref">Barcelona School of Informatics, Universitat Politècnica de Catalunya 2026</a>)</span>.</p>
+<p>That is quite different from learning Perl because the problem in front of you has become too large for whatever you were doing before.</p>
+<p>It is undoubtedly a better starting point.</p>
+<p>But formal training and experience solve somewhat different problems.</p>
+<p>Learning programming is different from maintaining software that other people depend on. Learning statistics is different from deciding what to do with a difficult experimental dataset. Learning about workflows is different from debugging one after hundreds of samples have already been processed. Learning the principles of reproducibility is different from trying to reproduce an analysis years later when the software, operating system and people involved have all changed.</p>
+<p>Some things are difficult to teach before there is a sufficiently inconvenient real problem attached to them.</p>
+</section>
+<section id="and-now-ai-changes-the-interface-again" class="level2">
+<h2 class="anchored" data-anchor-id="and-now-ai-changes-the-interface-again">And now AI changes the interface again</h2>
+<p>And now we are adding another layer.</p>
+<p>Generative AI is making computational tools considerably easier to access. Code can be generated from natural-language descriptions. Documentation can be queried conversationally. Unfamiliar libraries can be explored quickly. Increasingly, AI systems can connect tools and execute parts of computational workflows.</p>
+<p>That will change the skill set again.</p>
+<p>But easier execution does not necessarily mean easier judgement.</p>
+<p>Is the analysis appropriate for the biological question? Is the generated code correct? Are its assumptions reasonable? Can the result be reproduced and validated? How does the analysis fit into the surrounding computational environment? And what happens when an AI-generated answer looks entirely plausible and is wrong?</p>
+<p>Truong and Ritchie <span class="citation" data-cites="truong2026">(<a href="#ref-truong2026" role="doc-biblioref">2026</a>)</span> describe the current shift as one in which scientific intent, verification and computational critical thinking become increasingly important. I think that is a useful way of looking at it.</p>
+<p>AI may reduce the amount of time bioinformaticians spend writing certain kinds of code. It seems much less likely to reduce the need to understand what the analysis is doing or whether the result makes biological sense.</p>
+<p>If anything, lowering the barrier to producing an analysis may make those questions more important.</p>
+</section>
+<section id="from-scripts-to-systems" class="level2">
+<h2 class="anchored" data-anchor-id="from-scripts-to-systems">From scripts to systems</h2>
+<p>So how did we get from scripts to systems?</p>
+<p>Not through one deliberate transition.</p>
+<p>New biological technologies created new analytical problems. We developed algorithms to solve them. Increasing scale required pipelines and scalable computing. Repeating those analyses made workflow management and reproducibility important. Running them across organisations brought data management, infrastructure and production processes into the picture.</p>
+<p>And each new layer remained connected to the ones underneath it.</p>
+<p>That may be why defining the skill set of the bioinformatician has become so difficult. The field sits at a boundary that keeps moving as biology and technology change.</p>
+<p>The tools will continue to change.</p>
+<p>Understanding the biological problem, knowing enough to judge the analysis, and being able to connect the necessary pieces into something that works may prove rather more durable.</p>
+</section>
+<section id="references" class="level2">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-upcBioinformaticsCurriculum" class="csl-entry" role="listitem">
+Barcelona School of Informatics, Universitat Politècnica de Catalunya. 2026. <span>“Bachelor Degree in Bioinformatics: Curriculum.”</span> 2026. <a href="https://www.fib.upc.edu/en/bachelors/bachelor-degree-bioinformatics/curriculum">https://www.fib.upc.edu/en/bachelors/bachelor-degree-bioinformatics/curriculum</a>.
+</div>
+<div id="ref-gauthier2019" class="csl-entry" role="listitem">
+Gauthier, Jeff, Antony T. Vincent, Steve J. Charette, and Nicolas Derome. 2019. <span>“A Brief History of Bioinformatics.”</span> <em>Briefings in Bioinformatics</em> 20 (6): 1981–96. <a href="https://doi.org/10.1093/bib/bby063">https://doi.org/10.1093/bib/bby063</a>.
+</div>
+<div id="ref-truong2026" class="csl-entry" role="listitem">
+Truong, Van Q., and Marylyn D. Ritchie. 2026. <span>“Eras of Bioinformatics Technologies from Command-Line Interfaces to Artificial Intelligence (<span>AI</span>) Chatbots.”</span> <em>Briefings in Bioinformatics</em> 27 (4): bbag256. <a href="https://doi.org/10.1093/bib/bbag256">https://doi.org/10.1093/bib/bbag256</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/angemerkel\.github\.io\/building-bioinformatics");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© Angelika Merkel</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with Quarto</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

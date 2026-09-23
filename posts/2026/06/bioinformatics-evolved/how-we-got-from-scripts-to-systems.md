@@ -1,25 +1,10 @@
----
-title: "How We Got from Scripts to Systems"
-subtitle: "The changing skill set of the bioinformatician"
-description: "From analysing new types of sequencing data to building workflows and computational systems: how the work of the bioinformatician has changed over the last two decades."
+# How We Got from Scripts to Systems
 
-date: 2026-07-16
-author: "Angelika Merkel"
+*The changing skill set of the bioinformatician*
 
-categories:
-  - Bioinformatics
-  - Software Engineering
-  - Research Computing
+Bioinformatics has changed quite a bit over the last twenty years. So has the job description of the bioinformatician.
 
-bibliography: ../../../../references.bib
-link-citations: true
-
-draft: false
----
-
-Like many bioinformaticians of my generation, I did not train to become one. I trained as a molecular biologist and acquired most of my computational skills while trying to solve actual research problems.
-
-When I started my PhD in 2005, bioinformatics was already an established discipline. Its roots reach back to the first computational analyses of protein sequences in the 1960s [@gauthier2019]. But formal bioinformatics degrees and clearly defined career paths were much less common than they are today. Many of us came from biology, computer science, physics, mathematics or statistics and learned what we needed as we went along.
+When I started my PhD in 2005, bioinformatics was already an established discipline. Its roots reach back to the first computational analyses of protein sequences in the 1960s. But formal bioinformatics degrees and clearly defined career paths were much less common than they are today. Many of us came from biology, computer science, physics, mathematics or statistics and learned what we needed as we went along.
 
 I came from molecular biology.
 
@@ -105,13 +90,13 @@ This is why I find it difficult to describe the evolution of bioinformatics as a
 
 It is better described as an accumulation.
 
-![From scripts to systems: technological milestones and the evolving bioinformatics skill set. Examples are not exhaustive; dates are approximate and technologies overlapped. Based on the technological eras described by Truong and Ritchie (2026).](images/from-scripts-to-systems.png){#fig-scripts-to-systems fig-alt="Timeline showing the evolution of bioinformatics technologies and an accumulating skill set, from genomics and scripting through workflows, infrastructure, machine learning and generative AI."}
+**[FIGURE: From scripts to systems — technological milestones and the evolving bioinformatics skill set]**
 
 Biology did not become less important when programming became important. Programming did not disappear when workflow managers arrived. Statistical genomics remains fundamental even as machine learning becomes more common.
 
 Instead, the layers accumulated.
 
-High-throughput sequencing required new algorithms and scalable computing. Increasingly complex analyses brought workflow management, version control and software-engineering practices. Reproducibility connected analysis more closely with documentation and data management. Multi-omics, single-cell and spatial technologies created new integration problems. Machine learning and deep learning added another methodological layer [@truong2026].
+High-throughput sequencing required new algorithms and scalable computing. Increasingly complex analyses brought workflow management, version control and software-engineering practices. Reproducibility connected analysis more closely with documentation and data management. Multi-omics, single-cell and spatial technologies created new integration problems. Machine learning and deep learning added another methodological layer.
 
 And once all these components started interacting, it became increasingly useful to understand the wider computational ecosystem around them.
 
@@ -139,7 +124,7 @@ We do not all need to do everything. But we increasingly need to understand enou
 
 The starting point has changed as well.
 
-A student can now enter a bioinformatics degree and encounter molecular biology, programming, algorithms, databases, biostatistics, computational genomics, machine learning and high-performance computing as part of the formal curriculum [@upcBioinformaticsCurriculum].
+A student can now enter a bioinformatics degree and encounter molecular biology, programming, algorithms, databases, biostatistics, computational genomics, machine learning and high-performance computing as part of the formal curriculum.
 
 That is quite different from learning Perl because the problem in front of you has become too large for whatever you were doing before.
 
@@ -163,7 +148,7 @@ But easier execution does not necessarily mean easier judgement.
 
 Is the analysis appropriate for the biological question? Is the generated code correct? Are its assumptions reasonable? Can the result be reproduced and validated? How does the analysis fit into the surrounding computational environment? And what happens when an AI-generated answer looks entirely plausible and is wrong?
 
-Truong and Ritchie [-@truong2026] describe the current shift as one in which scientific intent, verification and computational critical thinking become increasingly important. I think that is a useful way of looking at it.
+Truong and Ritchie describe the current shift as one in which scientific intent, verification and computational critical thinking become increasingly important. I think that is a useful way of looking at it.
 
 AI may reduce the amount of time bioinformaticians spend writing certain kinds of code. It seems much less likely to reduce the need to understand what the analysis is doing or whether the result makes biological sense.
 
@@ -184,5 +169,3 @@ That may be why defining the skill set of the bioinformatician has become so dif
 The tools will continue to change.
 
 Understanding the biological problem, knowing enough to judge the analysis, and being able to connect the necessary pieces into something that works may prove rather more durable.
-
-## References
