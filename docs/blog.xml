@@ -10,9 +10,9 @@
 <atom:link href="https://angemerkel.github.io/building-bioinformatics/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Practical notes on bioinformatics, software, reproducibility, workflows, and research infrastructure.</description>
 <generator>quarto-1.7.32</generator>
-<lastBuildDate>Wed, 15 Jul 2026 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 15 Jun 2026 22:00:00 GMT</lastBuildDate>
 <item>
-  <title>How We Got from Scripts to Systems</title>
+  <title>From Scripts to Systems and Beyond</title>
   <dc:creator>Angelika Merkel</dc:creator>
   <link>https://angemerkel.github.io/building-bioinformatics/posts/2026/06/bioinformatics-evolved/</link>
   <description><![CDATA[ 
@@ -20,120 +20,120 @@
 
 
 
-<p>Like many bioinformaticians of my generation, I did not train to become one. I trained as a molecular biologist and acquired most of my computational skills while trying to solve actual research problems.</p>
-<p>When I started my PhD in 2005, bioinformatics was already an established discipline. Its roots reach back to the first computational analyses of protein sequences in the 1960s <span class="citation" data-cites="gauthier2019">(Gauthier et al. 2019)</span>. But formal bioinformatics degrees and clearly defined career paths were much less common than they are today. Many of us came from biology, computer science, physics, mathematics or statistics and learned what we needed as we went along.</p>
-<p>I came from molecular biology.</p>
-<p>During my PhD, I studied microsatellite evolution in yeast in a population genomics lab. I started by using Visual Basic to automate tasks in Excel. When the spreadsheets could no longer hold the data and the statistics became more complex, I moved to R. As the computational side of the project grew further, I learned Perl.</p>
-<p>There was no grand plan behind this progression. The problem changed, the limitations of the current approach became apparent, and another skill was added.</p>
-<p>Looking back, this seems to me a useful way of thinking about the development of bioinformatics itself.</p>
-<p>The field did not move neatly from one set of skills to another. It accumulated them.</p>
-<section id="first-we-had-to-work-out-how-to-analyse-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="first-we-had-to-work-out-how-to-analyse-the-data">First, we had to work out how to analyse the data</h2>
-<p>The completion of the Human Genome Project and the arrival of next-generation sequencing changed genomics profoundly. Suddenly, very large amounts of sequence data could be generated, and new experimental approaches appeared in rapid succession.</p>
-<p>When I joined the CRG in 2009, RNA-seq was still new. Experimental protocols were becoming established, and there was not yet a mature analysis workflow that everyone simply followed.</p>
-<p>We still had to work out how to analyse the data.</p>
+<section id="from-scripts-to-systems-and-beyond" class="level1">
+<h1>From Scripts to Systems and Beyond</h1>
+<p><em>Ramblings of an ageing bioinformatician</em></p>
+<p>Like many bioinformaticians of my generation (and yes, it is the older one), I did not train to become one. I trained as a molecular biologist and acquired most of my computational skills while trying to solve actual research problems.</p>
+<p>When I started my PhD in 2005, bioinformatics was already an established discipline. In fact, its roots reach back to the first computational analyses of protein sequences in the 1960s <span class="citation" data-cites="gauthier2019">(Gauthier et al. 2019)</span>. But formal bioinformatics degrees and clearly defined career paths were much less common than they are today. People entered the field from biology, computer science, physics, mathematics or statistics and often learned what they needed as they went along.</p>
+<p>During my PhD, I studied microsatellite evolution in yeast in a population genomics lab. I actually started by using Visual Basic to automate tasks in Excel. When the spreadsheets could no longer hold the data and the statistics became more complex, I turned to R, which I had first learned in ecology courses for statistical modelling. As the computational side of the project grew further, I learned Perl.</p>
+<p>There was no particular plan behind this progression. I learned what I needed when I needed it.</p>
+<p><strong>Over the next twenty years, this pattern continued.</strong> The questions changed, the technologies changed, and the scale changed. Each time, I added another layer.</p>
+<section id="when-ngs-technology-was-still-new" class="level2">
+<h2 class="anchored" data-anchor-id="when-ngs-technology-was-still-new">When NGS technology was still new</h2>
+<p>My transition into bioinformatics—and probably my reason for doing so—coincided with a major change in genomics.</p>
+<p>The Human Genome Project had recently been completed, and new sequencing technologies were transforming the amount of biological data that could be generated. When I joined the CRG in 2009, RNA-seq was still very new. The first papers had appeared only shortly before, experimental protocols were becoming established, and there was not yet a mature analysis workflow that everyone simply followed.</p>
 <p>How should reads be aligned? How should expression be quantified? How should transcript structures be handled? Which differences between samples were biological and which were introduced by the analysis itself?</p>
-<p>Today, many of these questions have relatively established solutions. At the time, they were part of an actively developing methodological landscape. New algorithms and software appeared quickly, and understanding what they did—and where they failed—was an important part of being a bioinformatician.</p>
-<p>I encountered something similar a few years later at CNAG when I started working with whole-genome bisulfite sequencing within BLUEPRINT. Again, both the experimental technology and the computational methods were developing.</p>
-<p>Across bioinformatics, this period saw rapid development of methods for read alignment, assembly, quantification, variant calling and many other analytical tasks.</p>
-<p>But as those individual building blocks became more established, the problem began to change.</p>
-<p>Knowing how to perform each step was no longer enough.</p>
-<p>We also had to make the whole thing run.</p>
+<p>Today, many of these questions have relatively established solutions. At the time, they were part of an actively developing methodological landscape. Initially, the main purpose of scripting was simply to create something that worked. New algorithms and software appeared quickly, and understanding what they did—and where they failed—was an important part of being a bioinformatician.</p>
+<p>I encountered something similar later at CNAG when I started working with whole-genome bisulfite sequencing within BLUEPRINT. WGBS generated a different type and scale of sequencing data, and both the experimental protocols and computational approaches were still developing.</p>
+<p>Across the field, methods for read alignment, genome assembly, transcript quantification, variant calling and many other tasks were developing rapidly. But as these individual analytical building blocks became more established, another problem became increasingly important:</p>
+<p><strong>How do we execute the whole analysis reliably?</strong></p>
 </section>
 <section id="from-scripts-to-workflows" class="level2">
 <h2 class="anchored" data-anchor-id="from-scripts-to-workflows">From scripts to workflows</h2>
-<p>A sequencing analysis is rarely one program. Data pass through a chain of tools and transformations before they become something we can interpret biologically.</p>
-<p>For a while, scripts, Makefiles and manual commands did a perfectly reasonable job of connecting these steps. Many pipelines—including the ones I worked with—were built this way.</p>
-<p>But increasing scale made the limitations increasingly obvious.</p>
-<p>What happens when step eight of a twelve-step analysis fails? Can it restart without repeating the first seven? Which software version produced a result? Which parameters were used? Can another person run the same analysis? Can I run it myself six months later?</p>
-<p>These sound like engineering questions rather than biological ones. Unfortunately, the biology does not become reliable by ignoring them.</p>
-<p>During my time at CRG and CNAG, pipelines therefore became an increasingly important part of the work. GRAPE supported large-scale RNA-seq analysis; later, gemBS provided a structured pipeline for whole-genome bisulfite sequencing.</p>
-<p>The pipelines I worked with were still largely implemented using Makefiles and Bash scripts. gemBS was experimentally implemented using CWL for ENCODE, while workflow systems such as Snakemake and Nextflow were emerging and would later become much more widely adopted.</p>
-<p>At the same time, other practices were becoming part of the bioinformatics toolbox. Version control made changes to code traceable. Containers helped deal with software dependencies and portability. R Markdown and Jupyter brought code, results and documentation closer together.</p>
-<p>The particular technologies matter less than the change they represent.</p>
-<p>Once the analytical steps were reasonably established, more attention could be given to <strong>how they were connected, executed, reproduced and maintained</strong>.</p>
-<p>The analysis was becoming part of a larger computational process.</p>
+<p>A sequencing analysis is rarely a single program. Reads have to be checked, transformed, aligned or quantified; intermediate files are generated; samples have to be combined; statistical analyses follow; software versions and parameters matter.</p>
+<p>At small scale, these steps can be connected with scripts and manual commands. At larger scale, that becomes increasingly fragile.</p>
+<p>What happens when step eight of a twelve-step analysis fails? Can we restart without repeating everything? Which software version produced a particular result? Can somebody else run the analysis? Can I reproduce it myself six months later?</p>
+<p>During my time at CRG and particularly later at CNAG, pipelines became an increasingly important part of my work. GRAPE supported large-scale RNA-seq analysis; later, gemBS provided a structured pipeline for whole-genome bisulfite sequencing.</p>
+<p>The pipelines I worked with were still largely implemented using Makefiles and Bash scripts. gemBS was experimentally implemented using CWL for ENCODE, but neither I nor the teams I worked with were routinely using systems such as Snakemake or Nextflow at that stage. These were emerging and would become much more widely adopted later.</p>
+<p>Version control and documentation also became increasingly important as analyses grew beyond disposable scripts. Literate programming offered a way to keep code, results and explanation together; in my case, R Markdown gradually became an important part of how I documented my analyses. Reproducibility was no longer only about obtaining the same statistical result. It increasingly meant being able to reconstruct how that result had been obtained.</p>
+<p>The implementation has changed considerably since then, but the underlying problem remains familiar: once the individual analytical steps are reasonably established, attention shifts towards connecting them and making the overall analysis run smoothly, repeatedly and at scale.</p>
+<p>The analysis was becoming part of a much larger computational landscape.</p>
+</section>
+<section id="when-the-data-became-part-of-the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="when-the-data-became-part-of-the-problem">When the data became part of the problem</h2>
+<p>Around 2010, sequencing technology leaped forward again and became faster, cheaper and even more high-throughput. The bottleneck was beginning to shift from generating data to managing and analysing it.</p>
+<p>Files had to be stored and transferred. Samples and datasets needed metadata. Information had to be structured consistently. Increasingly large collections of data needed to be searchable, accessible and reusable. Databases were hardly new to bioinformatics, but suddenly almost every project seemed to need one, as more data were generated and more people wanted direct access to them.</p>
+<p>The boundaries between bioinformatics and the field of data science also became increasingly blurred. Much of what we were doing was, after all, data science applied to biological questions—although with a rather specialised type of data and a substantial amount of domain knowledge attached.</p>
+<p>Increasing scale also changed the computing underneath the analysis. HPC had long been important for computationally demanding problems, but high-throughput sequencing made scalable compute and storage part of everyday bioinformatics for many more people. Cloud computing later provided another way of accessing those resources.</p>
+</section>
+<section id="machine-learning-becomes-more-widely-used" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning-becomes-more-widely-used">Machine learning becomes more widely used</h2>
+<p>Machine learning was not new to bioinformatics. Statistical and machine-learning methods had been used in the field for years. What changed was their reach and visibility. As biological datasets became larger, higher-dimensional and increasingly diverse, machine learning became more widely used for problems such as classification, dimensionality reduction, pattern discovery and data integration. Deep learning added another layer, particularly in areas such as imaging, sequence analysis and protein structure prediction.</p>
+<p>This is one part of the development that I did not follow particularly closely at first. The questions I was working on kept me largely within statistical genomics, and I only moved into machine learning much later.</p>
+<p>In a way, that is part of the story too. By this point, bioinformatics had become too broad for any one person to follow every branch equally closely.</p>
 </section>
 <section id="from-workflows-to-systems" class="level2">
 <h2 class="anchored" data-anchor-id="from-workflows-to-systems">From workflows to systems</h2>
-<p>At a large sequencing centre such as CNAG, that process extends well beyond the bioinformatics pipeline.</p>
-<p>High-throughput sequencing is a production environment. Samples, biobanking, laboratory protocols, metadata, sequencing, computational processing and data delivery all have to fit together. A LIMS connects information across that process. Established laboratory protocols and production pipelines make it possible to handle large numbers of samples consistently.</p>
-<p>This introduces another level of thinking.</p>
-<p>The question is no longer simply whether an analysis works. It is whether the entire process works repeatedly, reliably and at scale.</p>
-<p>I saw the other side of this problem later when I led a bioinformatics core facility at IJC. Instead of joining an established sequencing environment, my team and I had to build many of these structures ourselves, in a smaller environment supporting heterogeneous research projects.</p>
-<p>Suddenly, metadata capture, project organisation, computational resources, software maintenance, documentation, training and the delivery of results were all part of the problem.</p>
+<p>And I encountered yet another level.</p>
+<p>A large sequencing centre such as the CNAG is a production environment. High-throughput projects do not begin and end with the bioinformatics pipeline. Samples, laboratory protocols, biobanking, metadata, sequencing, computational processing and data delivery have to fit into a coordinated process. A LIMS connects information across that process, while established laboratory protocols and production pipelines make it possible to handle large numbers of samples consistently.</p>
+<p>This was quite a different perspective from working on an individual research analysis. The question was no longer only whether an analytical method worked, but how it fitted into a larger process that had to work repeatedly and at scale.</p>
+<p>When I later led a bioinformatics core facility at IJC, I encountered the same problem from almost the opposite direction. Instead of entering an established sequencing environment, my team and I had to build many of these structures from scratch for a much smaller and more heterogeneous setting.</p>
+<p>There were different projects, researchers and data types, all with different requirements. Projects needed sufficient metadata. Analyses needed to run consistently. Results had to be stored and communicated. Software had to be maintained. People needed documentation and training. Computational resources had to be organised.</p>
 <p>For methylation-array projects, for example, we developed an environment in which BioForms captured project and sample information, EPipe automated the analysis, computational resources handled the processing, and MethylationDB provided structured access to results.</p>
-<p>None of those components alone was the bioinformatics analysis.</p>
-<p>The useful system emerged from connecting them.</p>
-<p>And that, I think, is one of the less obvious changes in bioinformatics over the last two decades. We still analyse biological data. But increasingly we also build and maintain the systems that allow those analyses to happen reliably.</p>
+<p>None of these components alone was the bioinformatics analysis. The useful system emerged from connecting them.</p>
+<p>Increasingly, the object I was working on was not only the analysis, but also the <strong>system around the analysis</strong>.</p>
 </section>
-<section id="the-skill-set-accumulated" class="level2">
-<h2 class="anchored" data-anchor-id="the-skill-set-accumulated">The skill set accumulated</h2>
-<p>This is why I find it difficult to describe the evolution of bioinformatics as a succession of technologies or eras.</p>
-<p>It is better described as an accumulation.</p>
-<div id="fig-scripts-to-systems" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Timeline showing the evolution of bioinformatics technologies and an accumulating skill set, from genomics and scripting through workflows, infrastructure, machine learning and generative AI.">
+<section id="a-skill-set-that-accumulated" class="level2">
+<h2 class="anchored" data-anchor-id="a-skill-set-that-accumulated">A skill set that accumulated</h2>
+<p>I think about the changing skill set of bioinformatics not as one set of skills replacing another, but as an accumulation of layers.</p>
+<div id="fig-scripts-to-systems" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Timeline showing changes in bioinformatics technologies alongside an accumulating skill set. Earlier skills such as biology, scripting and statistical analysis continue while workflow engineering, data management, infrastructure, machine learning and AI are added.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-scripts-to-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://angemerkel.github.io/building-bioinformatics/posts/2026/06/bioinformatics-evolved/images/from-scripts-to-systems.png" class="img-fluid figure-img" alt="Timeline showing the evolution of bioinformatics technologies and an accumulating skill set, from genomics and scripting through workflows, infrastructure, machine learning and generative AI.">
+<img src="https://angemerkel.github.io/building-bioinformatics/posts/2026/06/bioinformatics-evolved/images/from-scripts-to-systems.png" class="img-fluid figure-img" alt="Timeline showing changes in bioinformatics technologies alongside an accumulating skill set. Earlier skills such as biology, scripting and statistical analysis continue while workflow engineering, data management, infrastructure, machine learning and AI are added.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scripts-to-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: From scripts to systems: technological milestones and the evolving bioinformatics skill set. Examples are not exhaustive; dates are approximate and technologies overlapped. Based on the technological eras described by Truong and Ritchie (2026).
+Figure&nbsp;1: From scripts to systems: technological changes and the accumulating bioinformatics skill set. Examples are not exhaustive; dates are approximate and technologies overlap. Based in part on the technological eras described by Truong and Ritchie (2026) <span class="citation" data-cites="truong2026">(Truong and Ritchie 2026)</span>.
 </figcaption>
 </figure>
 </div>
-<p>Biology did not become less important when programming became important. Programming did not disappear when workflow managers arrived. Statistical genomics remains fundamental even as machine learning becomes more common.</p>
-<p>Instead, the layers accumulated.</p>
-<p>High-throughput sequencing required new algorithms and scalable computing. Increasingly complex analyses brought workflow management, version control and software-engineering practices. Reproducibility connected analysis more closely with documentation and data management. Multi-omics, single-cell and spatial technologies created new integration problems. Machine learning and deep learning added another methodological layer <span class="citation" data-cites="truong2026">(Truong and Ritchie 2026)</span>.</p>
-<p>And once all these components started interacting, it became increasingly useful to understand the wider computational ecosystem around them.</p>
-<p>That is the important part of the figure: the earlier skills do not stop when the next one appears.</p>
-<p>They continue.</p>
+<p>Biological knowledge did not become less important when programming became important. Scripting did not disappear when workflow managers arrived. Statistical genomics remains fundamental even as machine learning becomes more common.</p>
+<p>Instead, new capabilities were added.</p>
+<p>High-throughput sequencing required new algorithms and scalable computing. Increasingly complex analyses brought workflow management, version control and software-engineering practices. Reproducibility connected analysis more closely with documentation and data management. Multi-omics, single-cell and spatial technologies created new integration problems. Machine learning and deep learning added another methodological layer.</p>
+<p>As all these components became interconnected, understanding the wider computational ecosystem also became increasingly useful.</p>
+<p>The important point in the figure is that the earlier skills do not end when a new one appears.</p>
+<p>They accumulate.</p>
 </section>
-<section id="so-what-exactly-is-a-bioinformatician-now" class="level2">
-<h2 class="anchored" data-anchor-id="so-what-exactly-is-a-bioinformatician-now">So what exactly is a bioinformatician now?</h2>
-<p>Put all those skills together and we arrive at a slightly absurd job description.</p>
-<p>Molecular biologist. Statistician. Programmer. Software engineer. Data engineer. Infrastructure specialist. Machine-learning expert.</p>
-<p>Preferably with five years of experience in a technology released three years ago.</p>
-<p>The point, of course, is not that every bioinformatician should be all of these things.</p>
-<p>As the field has expanded, specialisation has become necessary. Some bioinformaticians work close to biological interpretation and statistical modelling. Others focus on methods development, scientific software, workflow engineering, research data, computational infrastructure or machine learning.</p>
-<p>Perhaps the real change is that modern bioinformatics depends on <strong>all of these capabilities existing somewhere within the team or organisation</strong>.</p>
-<p>We do not all need to do everything. But we increasingly need to understand enough about neighbouring areas to work across their boundaries.</p>
+<section id="there-is-no-single-modern-bioinformatician" class="level2">
+<h2 class="anchored" data-anchor-id="there-is-no-single-modern-bioinformatician">There is no single modern bioinformatician</h2>
+<p>There is an obvious problem with presenting the field this way.</p>
+<p>Taken together, the figure starts to look suspiciously like a job advertisement for an impossible person: molecular biologist, statistician, programmer, software engineer, data engineer, infrastructure specialist and machine-learning expert all at once.</p>
+<p>That is not the point (although those job advertisements do exist).</p>
+<p>As bioinformatics has expanded, specialisation has become both possible and necessary. Some bioinformaticians work close to biological interpretation and statistical modelling. Others specialise in methods development, scientific software, workflows, research data, computational infrastructure or machine learning.</p>
+<p>The important change is not that every bioinformatician needs all these skills, but that modern bioinformatics depends on <strong>all these capabilities existing somewhere within the team or organisation</strong>.</p>
+<p>Still, we need enough understanding of neighbouring areas to work and communicate with each other.</p>
 </section>
-<section id="todays-bioinformaticians-start-somewhere-else" class="level2">
-<h2 class="anchored" data-anchor-id="todays-bioinformaticians-start-somewhere-else">Today’s bioinformaticians start somewhere else</h2>
-<p>The starting point has changed as well.</p>
-<p>A student can now enter a bioinformatics degree and encounter molecular biology, programming, algorithms, databases, biostatistics, computational genomics, machine learning and high-performance computing as part of the formal curriculum <span class="citation" data-cites="upcBioinformaticsCurriculum">(Barcelona School of Informatics, Universitat Politècnica de Catalunya 2026)</span>.</p>
-<p>That is quite different from learning Perl because the problem in front of you has become too large for whatever you were doing before.</p>
-<p>It is undoubtedly a better starting point.</p>
-<p>But formal training and experience solve somewhat different problems.</p>
-<p>Learning programming is different from maintaining software that other people depend on. Learning statistics is different from deciding what to do with a difficult experimental dataset. Learning about workflows is different from debugging one after hundreds of samples have already been processed. Learning the principles of reproducibility is different from trying to reproduce an analysis years later when the software, operating system and people involved have all changed.</p>
-<p>Some things are difficult to teach before there is a sufficiently inconvenient real problem attached to them.</p>
+<section id="starting-from-a-different-place" class="level2">
+<h2 class="anchored" data-anchor-id="starting-from-a-different-place">Starting from a different place</h2>
+<p>Students entering bioinformatics today start from a very different position.</p>
+<p>An undergraduate bioinformatics curriculum now includes molecular and cell biology alongside programming, algorithms, databases, biostatistics, statistical learning, computational genomics, machine learning and high-performance computing <span class="citation" data-cites="upcBioinformaticsCurriculum">(Barcelona School of Informatics, Universitat Politècnica de Catalunya 2026)</span>.</p>
+<p>That breadth would have been difficult to imagine two decades ago.</p>
+<p>But completing a course is not quite the same as dealing with the corresponding problem in practice.</p>
+<p>Learning programming is different from maintaining software that other people depend on. Learning statistics is different from deciding what to do with a difficult experimental dataset. Learning about workflows is different from debugging one that has failed after processing hundreds of samples. And learning about reproducibility is different from trying to reproduce an analysis years later when the software, operating system and people involved have all changed.</p>
+<p>Formal education provides a much stronger starting point today. Experience still provides something different.</p>
+<p>Many of the skills that have mattered most in my own career developed through applying them to real problems, getting things wrong, debugging them and eventually recognising patterns in the problems that kept appearing.</p>
+<p>At the same time, bioinformatics has become so broad, and technologies change so quickly, that keeping every part of your skill set up to date has become almost impossible. It is no longer realistic to learn every new technology in depth before we need to use it.</p>
 </section>
 <section id="and-now-ai-changes-the-interface-again" class="level2">
 <h2 class="anchored" data-anchor-id="and-now-ai-changes-the-interface-again">And now AI changes the interface again</h2>
 <p>And now we are adding another layer.</p>
-<p>Generative AI is making computational tools considerably easier to access. Code can be generated from natural-language descriptions. Documentation can be queried conversationally. Unfamiliar libraries can be explored quickly. Increasingly, AI systems can connect tools and execute parts of computational workflows.</p>
-<p>That will change the skill set again.</p>
-<p>But easier execution does not necessarily mean easier judgement.</p>
-<p>Is the analysis appropriate for the biological question? Is the generated code correct? Are its assumptions reasonable? Can the result be reproduced and validated? How does the analysis fit into the surrounding computational environment? And what happens when an AI-generated answer looks entirely plausible and is wrong?</p>
-<p>Truong and Ritchie <span class="citation" data-cites="truong2026">(2026)</span> describe the current shift as one in which scientific intent, verification and computational critical thinking become increasingly important. I think that is a useful way of looking at it.</p>
-<p>AI may reduce the amount of time bioinformaticians spend writing certain kinds of code. It seems much less likely to reduce the need to understand what the analysis is doing or whether the result makes biological sense.</p>
-<p>If anything, lowering the barrier to producing an analysis may make those questions more important.</p>
+<p>Generative AI is changing how we interact with computational tools. Code can be generated from natural-language descriptions, unfamiliar libraries can be explored much more quickly, and AI systems are beginning to connect tools and execute parts of computational workflows.</p>
+<p>In some ways, this may help with the very problem created by the expanding bioinformatics skill set. AI makes it easier to move into unfamiliar territory, refresh skills we have not used for a while, and work with technologies we have not had time to learn in depth.</p>
+<p>But making something easier to execute does not necessarily make it easier to judge.</p>
+<p>Is the analysis appropriate for the biological question? Is the generated code correct? Are the assumptions reasonable? Can the results be validated and reproduced? And what happens when an AI-generated solution is perfectly plausible and wrong?</p>
+<p>I believe that with this shift, scientific intent, verification and critical thinking, especially with respect to computational approaches, become increasingly important.</p>
+<p>AI may well reduce the amount of time we spend writing certain kinds of code. It seems much less likely to reduce the need to understand what an analysis is doing, how its components fit together, or whether the result makes biological sense.</p>
 </section>
 <section id="from-scripts-to-systems" class="level2">
 <h2 class="anchored" data-anchor-id="from-scripts-to-systems">From scripts to systems</h2>
-<p>So how did we get from scripts to systems?</p>
-<p>Not through one deliberate transition.</p>
-<p>New biological technologies created new analytical problems. We developed algorithms to solve them. Increasing scale required pipelines and scalable computing. Repeating those analyses made workflow management and reproducibility important. Running them across organisations brought data management, infrastructure and production processes into the picture.</p>
-<p>And each new layer remained connected to the ones underneath it.</p>
-<p>That may be why defining the skill set of the bioinformatician has become so difficult. The field sits at a boundary that keeps moving as biology and technology change.</p>
-<p>The tools will continue to change.</p>
-<p>Understanding the biological problem, knowing enough to judge the analysis, and being able to connect the necessary pieces into something that works may prove rather more durable.</p>
+<p>Looking back, I never made a conscious decision to move from scripts to systems.</p>
+<p>I started with biological questions. Those questions led me to data, statistics and programming. Larger datasets led to pipelines and scalable computing. Repeated analyses made reproducibility and workflow management important. Working in a sequencing centre showed me what large-scale production looks like. Building a bioinformatics facility made me think about how data, software, infrastructure and people fit together.</p>
+<p>Each layer appeared because the previous one was no longer enough on its own.</p>
+<p>Perhaps that is why defining the skill set of a bioinformatician has become so difficult. Bioinformatics sits at a boundary that keeps moving as biology and technology change.</p>
+<p>The tools will continue to change. The ability to understand the biological problem, learn what is needed to address it, and connect the necessary pieces into something that works seems rather more durable.</p>
+
+
+
 </section>
-<section id="references" class="level2">
-
-
-
-
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
@@ -148,10 +148,10 @@ Truong, Van Q., and Marylyn D. Ritchie. 2026. <span>“Eras of Bioinformatics Te
 </div>
 </div></section></div> ]]></description>
   <category>Bioinformatics</category>
-  <category>Software Engineering</category>
   <category>Research Computing</category>
+  <category>Software Engineering</category>
   <guid>https://angemerkel.github.io/building-bioinformatics/posts/2026/06/bioinformatics-evolved/</guid>
-  <pubDate>Wed, 15 Jul 2026 22:00:00 GMT</pubDate>
+  <pubDate>Mon, 15 Jun 2026 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
