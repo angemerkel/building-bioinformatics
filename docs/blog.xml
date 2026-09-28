@@ -10,7 +10,143 @@
 <atom:link href="https://angemerkel.github.io/building-bioinformatics/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Practical notes on bioinformatics, software, reproducibility, workflows, and research infrastructure.</description>
 <generator>quarto-1.7.32</generator>
-<lastBuildDate>Mon, 15 Jun 2026 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 15 Jul 2026 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>A Bioinformatics Core Is More Than a Cluster</title>
+  <dc:creator>Angelika Merkel</dc:creator>
+  <link>https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="computing-infrastructure-bioinformatics-workflows" class="level1">
+<h1>Computing infrastructure &amp; bioinformatics workflows</h1>
+<p>When people think about scientific computing infrastructure, they often think first about the compute cluster: CPUs, GPUs, storage capacity. But over the years, especially while running a bioinformatics core facility, I have come to think that the real challenge is not simply computing power and storage. It is designing an ecosystem where data, workflows, and users all fit together coherently.</p>
+<p>The challenge is no longer simply:</p>
+<blockquote class="blockquote">
+<p>“Can we analyze this dataset?”</p>
+</blockquote>
+<p>but increasingly:</p>
+<blockquote class="blockquote">
+<p>“Can we build a sustainable, reproducible, scalable ecosystem that allows many analyses, many users, and many projects to coexist efficiently over time?”</p>
+</blockquote>
+<p>A modern bioinformatics core facility is no longer just a collection of Linux servers running analysis pipelines. It increasingly resembles a small scientific platform engineering organization, combining aspects of IT infrastructure, DevOps, software engineering, HPC, data management, scientific consulting, and statistical analysis. Unfortunately, in my experience this breadth of responsibility is still often underestimated, with teams of two or three people expected to cover all of these areas.</p>
+<p>Using this post I want to sketch out what I believe is a practical architecture for a modern bioinformatics core facility and explain how a typical workflow — differential gene expression analysis from raw sequencing data to final report — fits into that infrastructure.</p>
+<p>In many ways, this is less about individual technologies and more about the operational philosophy of modern bioinformatics: how data, workflows, infrastructure, reproducibility, and collaboration fit together into sustainable scientific systems.</p>
+<section id="networks---the-separation-of-concerns" class="level2">
+<h2 class="anchored" data-anchor-id="networks---the-separation-of-concerns">Networks - the separation of concerns</h2>
+<p>Research computing infrastructure is usually distributed across multiple network segments (VLANs or subnets) to seperate different traffic, responsibilities, and risks.</p>
+<p>This separation is not just about security. It is also about performance and operational stability.</p>
+<p><img src="https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/images/Network_architecture.png" class="img-fluid"></p>
+<p>Any bioinformatic workflow needs to adapt to the constraints of the infrastructure and leverage optimal performance and stability.</p>
+<hr>
+</section>
+<section id="the-data-path" class="level2">
+<h2 class="anchored" data-anchor-id="the-data-path">The data path</h2>
+<p>One of the first places where this separation becomes operationally important is the path by which data enters the infrastructure.</p>
+<p>Large data sets should never follow this path:</p>
+<pre><code>Internet → laptop → project storage</code></pre>
+<p>Instead they should flow like this:</p>
+<pre><code>Internet → DMZ transfer node → validated ingest → project storage</code></pre>
+<p>The demilitarized zone - or DMZ for short - is a neutral sub network that acts as a secure buffer zone facing both the untrusted outside world (internet) and the private institutional network. It is tightly firewall controlled and key to information security. This is were Aspera, sftp and even wget/curl transfers should happen (as should checksum validation of your downloads).</p>
+<p>The transfer node acts as a controlled gateway and is connected to the project storage, either directly or via a staging area. The transfer tools themselves should be run on the node.</p>
+<p>As an illustration, here an example sequence download from the European Nucleotide Archive (ENA) using <code>wget</code>:</p>
+<p>Login to transfer node</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ssh</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\~</span>/.ssh/id_ed25519 username<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\@</span>transfer01.institute.org</span></code></pre></div>
+<p>Then run the transfer tool</p>
+<pre><code>wget \
+  -P /dmz/ingest/PROJECT_X/ \
+  https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR123/ERR123456/ERR123456_1.fastq.gz</code></pre>
+<p>Then validate:</p>
+<pre><code>md5sum -c checksums.md5</code></pre>
+<p>Finally, move from staging area to project storage:</p>
+<pre><code>rsync -avP \
+  /dmz/ingest/PROJECT_X/ \
+  /data/projects/PROJECT_X/raw/</code></pre>
+<p>Data sets can be extremely large, so it is vital to use the appropriate transfer protocol and ensure that enough space is available both in the staging area and in project storage.</p>
+<p><img src="https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/images/Transfer_protocalls_and_data_sizes.png" width="682" height="419"></p>
+<hr>
+</section>
+<section id="persistent-storage-and-scratch" class="level2">
+<h2 class="anchored" data-anchor-id="persistent-storage-and-scratch">Persistent storage and scratch</h2>
+<p>Another important distinction when dealing with high-performance computing (HPC) is between persistent storage and temporary compute storage.</p>
+<p>Persistent project storage contains raw data (e.g.&nbsp;FASTQs), references, metadata, final outputs, and reports. This storage is collaborative, backed up, and long-lived. Often, a further distinction is made between immutable data such as raw sequencing data, which typically has read-only access, and active project data such as analyses, results, reports, and notebooks that allow full read/write access.</p>
+<p>Compute workflows, on the other hand, generate enormous amounts of temporary data such as alignment intermediates, sorting chunks, caches, decompression artifacts, and other transient files. Writing all of this directly to shared project storage can quickly overload the filesystem and significantly impact performance for other users and workflows.</p>
+<p>The standard solution is therefore to perform heavy intermediate computation on scratch storage, which is optimized for high I/O performance and, in some architectures, attached directly to the compute nodes.</p>
+<p><img src="https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/images/persistent-storage-and-scratch-workflow.png" class="img-fluid"></p>
+<p>In practice, workflows often stage or temporarily copy raw data onto scratch storage before computation starts. Here again, login nodes act as the entry point by providing access to mounted project storage together with scheduler access. Scratch storage itself may either be mounted cluster-wide or exist as node-local storage attached directly to individual compute nodes. Unlike persistent project storage, scratch storage is usually temporary and not backed up.</p>
+<hr>
+</section>
+<section id="workflow-orchestration-and-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-orchestration-and-reproducibility">Workflow orchestration and reproducibility</h2>
+<p>In times where FAIR principles, reproducibility, and increasingly also ISO certifications are becoming expected, a modern bioinformatics facility — or, for that matter, any bioinformatician working in a collaborative environment — should start treating workflows as production infrastructure rather than ad-hoc scripts.</p>
+<p>For me this includes things like version control, continuous integration and deployment (CI/CD), reproducible environments, containers, automated testing, and provenance tracking. Pipelines — both software and analysis workflows — increasingly become institutional computational assets that must be maintained, versioned, validated, documented, and reproducibly deployable across projects and users.</p>
+<p>Workflows themselves should be version controlled (e.g.&nbsp;using git) and hosted in systems such as GitLab, GitHub, or lightweight self-hosted alternatives like Gitea, while the actual computation is orchestrated through Slurm, containers, and workflow managers such as Nextflow or Snakemake.</p>
+<p><img src="https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/images/clipboard-2184071818.png" class="img-fluid"></p>
+<p>Internal GitLab or Gitea instances can be tightly integrated with the computational infrastructure, CI/CD pipelines, container registries, and job submission environment. At the same time, external platforms such as <a href="https://github.com?utm_source=chatgpt.com">GitHub</a> increasingly play an important role for open-source development, community contributions, public releases, documentation, and long-term sustainability of scientific software beyond individual institutes or projects.</p>
+<p>Similarly, mature open-source ecosystems already exist around containers and standardized workflows, such as Docker registries and the nf-core repository for reusable and standardized Nextflow pipelines.</p>
+<p>This is where a substantial change in mindset takes place. A bioinformatics unit no longer simply “runs analyses”. It maintains a reproducible computational ecosystem.</p>
+<hr>
+</section>
+<section id="interactive-analysis-is-changing" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-analysis-is-changing">Interactive analysis is changing</h2>
+<p>One of the biggest architectural shifts in recent years has been the move away from “desktop-centric” bioinformatics.</p>
+<p>Traditionally, institutional storage used to be directly directly mounted to users’ laptops or desktops and users worked locally using IDEs connected to remote systems, particularly for data exploration and visualization. While functional, this model often involves large data movement, dependency conflicts, inconsistent environments, and increasingly complicated support requirements. (Remember how IT sometimes needed weeks to catch up installing all your favourite R packages locally.)</p>
+<p>More and more institutes are therefore moving interactive analysis environments directly into the infrastructure itself, deploying platforms such as <u>JupyterHub</u>, <u>RStudio Server</u>, <u>Visual Studio Code</u>, and <u>Open OnDemand</u> close to compute and storage resources. In this model, users increasingly interact through a browser rather than by directly moving data between systems.</p>
+<p>The advantages are enormous. Data movement is reduced, dependency conflicts become easier to control, on-boarding of new users is simplified, reproducibility improves, and security governance becomes considerably more manageable. At the same time, users do no longer require powerful local workstations simply to interact with large data sets.</p>
+<p>Most importantly, the data itself largely remains inside the institutional infrastructure. Instead of transferring entire data sets to individual machines, what usually crosses to the user’s device are rendered plots, notebook outputs, terminal streams, dashboards, and final reports. In many ways, computation increasingly moves to where the data already lives rather than the other way around.</p>
+<hr>
+</section>
+<section id="sharing-results-and-collaborative-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="sharing-results-and-collaborative-outputs">Sharing results and collaborative outputs</h2>
+<p>Nowadays, bioinformatics workflows increasingly produce more than static result files. Reports, dashboards, notebooks, and interactive visualizations are often shared directly with collaborators through internal web services, HTML reports, Quarto websites, or lightweight analysis portals.</p>
+<p>Architecturally, these services usually sit close to the interactive analysis layer and are connected to project storage and computational infrastructure. Rather than transferring large datasets between collaborators, the infrastructure increasingly serves processed outputs, rendered visualizations, notebook sessions, and reproducible reports through authenticated web-based environments.</p>
+<p>Increasingly, these systems are also connected to internal databases and data platforms that store structured metadata, processed results, project information, and searchable knowledge resources. While project storage manages the underlying files themselves, databases provide the layer that allows data, analyses, and results to become queryable, discoverable, and easier to integrate into dashboards, portals, APIs, and collaborative environments. Modern scientific infrastructure therefore increasingly depends on structured metadata systems and data platforms, not only filesystems.</p>
+<p>This part of the infrastructure is often underestimated, yet it is arguably just as important as the computational infrastructure itself. Science that cannot be communicated, shared, explored, or reproduced is effectively invisible and, in many ways, practically non-existent. Computational workflows therefore no longer end with finished analyses, but increasingly with the generation of reproducible, accessible, and collaborative outputs that allow scientific results to be interpreted, discussed, validated, and ultimately built upon by others. <img src="https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/images/Sharing_results_and_collaborative_outputs.png" class="img-fluid">For external collaborators, these services are often exposed through authenticated web portals, reverse proxies, or lightweight publication layers sitting between the internal infrastructure and the outside world. Importantly, collaborators usually interact only with processed outputs, dashboards, notebooks, and reports rather than directly accessing the underlying HPC infrastructure itself.</p>
+<p>In many ways, the infrastructure therefore no longer only supports computation itself, but increasingly also the communication, dissemination, and reproducibility of the resulting science.</p>
+<hr>
+</section>
+<section id="the-hidden-role-of-the-management-network" class="level2">
+<h2 class="anchored" data-anchor-id="the-hidden-role-of-the-management-network">The hidden role of the management network</h2>
+<p>The Management VLAN typically contains systems related to authentication, monitoring, logging, scheduler controllers, configuration management, backup orchestration, and increasingly also CI/CD services (e.g.&nbsp;GitLab). While scientific data mainly flows between storage, compute, and interactive services, the management layer quietly coordinates and supervises the entire ecosystem in the background. In many ways, it functions as the nervous system of the infrastructure.</p>
+<p>Management of this layer is often split between traditional IT teams and scientific computing teams.These teams may come from quite different backgrounds and have developed around different requirements. Enterprise IT typically emphasises stability, security, standardisation and maintainability, while scientific computing has grown around the changing computational needs of research.</p>
+<p>In my experience, this can create a cultural gap between traditional IT and scientific computing. Traditional IT is primarily concerned with building robust, stable, highly secure, and preferably immutable infrastructure. Scientific computing, on the other hand, is part of the research process itself, where the goal is often to experiment, rapidly implement new approaches, and maintain flexibility and scalability.</p>
+<p>Neither perspective is wrong, but they optimize for different things. Bridging these different mindsets ultimately becomes a human problem rather than a purely technical one, and good communication and interoperability between the teams are crucial for building sustainable scientific infrastructure</p>
+<hr>
+</section>
+</section>
+<section id="example-differential-gene-expression-workflow" class="level1">
+<h1>Example: Differential gene expression workflow</h1>
+<p>Putting this all together, a typical RNA-seq differential expression workflow might look something like this:</p>
+<p><img src="https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/images/Example_workflow_gene_expression.png" class="img-fluid"></p>
+<hr>
+<section id="final-thoughts---infrastructure-as-part-of-the-scientific-method" class="level2">
+<h2 class="anchored" data-anchor-id="final-thoughts---infrastructure-as-part-of-the-scientific-method">Final thoughts - Infrastructure as part of the scientific method</h2>
+<p>Modern bioinformatics infrastructure is becoming less about individual hardware or tools and more about building sustainable computational ecosystems that allow science itself to scale. The difficulty, in my experience, lies in the practical implementation. Conceptually, FAIR data workflows are now widely accepted and well known. However, because this ecosystem functions as a largely silent background — often invisible to researchers — the time and, importantly, the manpower required to build, operate, and maintain these systems are frequently undervalued and consequently under-supported.</p>
+<p>I believe the way forward requires a change of culture, both among those who benefit from bioinformatics support and those who administratively and financially support it.</p>
+<p>Without that cultural shift, bioinformatics infrastructure risks continuing to be treated as a secondary support function rather than as a core component of modern biomedical research itself. Until that changes, many institutes will continue relying on small overextended teams to support increasingly complex computational ecosystems.</p>
+<p>Good infrastructure is often invisible when it works well. But increasingly, modern science depends on it.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Bioinformatics</category>
+  <category>Research Computing</category>
+  <category>Infrastructure</category>
+  <guid>https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/</guid>
+  <pubDate>Wed, 15 Jul 2026 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>From Scripts to Systems and Beyond</title>
   <dc:creator>Angelika Merkel</dc:creator>

@@ -1,1 +1,37 @@
 /* css styles */
+
+/* ------------------------------
+   Code blocks
+   ------------------------------ */
+
+pre {
+  background-color: #f6f8fb;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+}
+
+div.sourceCode {
+  background-color: #f6f8fb;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+
+/* ------------------------------
+   Tables
+   ------------------------------ */
+
+table {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+table thead th {
+  background-color: #f6f8fb;
+  padding: 0.65rem 0.75rem;
+}
+
+table tbody td {
+  padding: 0.65rem 0.75rem;
+}
