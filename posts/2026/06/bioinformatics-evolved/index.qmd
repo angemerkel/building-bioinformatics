@@ -1,6 +1,6 @@
 ---
 title: "From Scripts to Systems and Beyond"
-subtitle: "The ever evolving skill set of a bioinformatician or How did I get here?"
+subtitle: " How did I get here - The ever evolving skill set of a bioinformatician"
 description: "A personal look at how bioinformatics grew from scripts and individual analyses into workflows and data systems, and how the skills needed along the way changed."
 
 date: 2026-06-16

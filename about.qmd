@@ -1,8 +1,9 @@
 ---
 title: "About"
+body-classes: about-page
 ---
 
-# The author
+# About me
 
 I'm Angelika Merkel, a biologist who moved into bioinformatics around two decades ago, when the field had neither defined training paths nor clear professional roles.
 

@@ -1,12 +1,13 @@
 ---
 title: "Building Bioinformatics"
 subtitle: "Practical notes on bioinformatics, software, reproducibility, workflows, and research infrastructure"
+body-classes: home-page
 listing:
   contents: posts
   sort: "date desc"
   type: default
   max-items: 3
-  fields: [date, title, description, categories]
+  fields: [title, date, categories, description]
 ---
 
 Bioinformatics has long since become more than just analysing biological data. Building and maintaining workflows, software, infrastructure, and data systems is now an integral part of the discipline and of modern computational research.
