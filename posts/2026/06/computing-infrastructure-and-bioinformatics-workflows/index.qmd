@@ -45,15 +45,15 @@ Most analyses start long before the first computational job is submitted: data f
 
 Large data sets should generally not follow this path:
 
-``` text
+::: {.data-path}
 Internet → laptop → project storage
-```
+:::
 
 Instead they should flow like this:
 
-``` text
+::: {.data-path}
 Internet → DMZ transfer node → validated ingest → project storage
-```
+:::
 
 The demilitarised zone — or DMZ for short — is a separate network segment that acts as a controlled buffer between the outside world and the private institutional network. It is tightly controlled by firewall rules and is key to information security. This is where tools such as `Aspera`, `SFTP`, `wget` or `curl` can be used for external data transfers, together with checksum validation of downloaded data.
 

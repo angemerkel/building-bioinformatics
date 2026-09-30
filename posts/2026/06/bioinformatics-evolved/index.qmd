@@ -1,6 +1,6 @@
 ---
 title: "From Scripts to Systems and Beyond"
-subtitle: "Ramblings of an ageing bioinformatician"
+subtitle: "The ever evolving skill set of a bioinformatician or How did I get here?"
 description: "A personal look at how bioinformatics grew from scripts and individual analyses into workflows and data systems, and how the skills needed along the way changed."
 
 date: 2026-06-16
@@ -13,11 +13,8 @@ categories:
 
 bibliography: ../../../../references.bib
 link-citations: true
+draft: false
 ---
-
-# From Scripts to Systems and Beyond
-
-*Ramblings of an ageing bioinformatician*
 
 Like many bioinformaticians of my generation (and yes, it is the older one), I did not train to become one. I trained as a molecular biologist and acquired most of my computational skills while trying to solve actual research problems.
 
@@ -28,6 +25,7 @@ During my PhD, I studied microsatellite evolution in yeast in a population genom
 There was no particular plan behind this progression. I learned what I needed when I needed it.
 
 **Over the next twenty years, this pattern continued.** The questions changed, the technologies changed, and the scale changed. Each time, I added another layer.
+
 
 ## When NGS technology was still new
 
@@ -101,21 +99,18 @@ Increasingly, the object I was working on was not only the analysis, but also th
 
 ## A skill set that accumulated
 
-I think about the changing skill set of bioinformatics not as one set of skills replacing another, but as an accumulation of layers.
+I think about the changing skill set of bioinformatics not as one set of skills replacing another, but as an accumulation of layers as technology developed.
 
-![From scripts to systems: technological changes and the accumulating bioinformatics skill set. Examples are not exhaustive; dates are approximate and technologies overlap. Based in part on the technological eras described by Truong and Ritchie (2026) [@truong2026].](images/from-scripts-to-systems.png){#fig-scripts-to-systems fig-alt="Timeline showing changes in bioinformatics technologies alongside an accumulating skill set. Earlier skills such as biology, scripting and statistical analysis continue while workflow engineering, data management, infrastructure, machine learning and AI are added."}
+::: {.wide-figure}
+![](images/from-scripts-to-systems.png)
+:::
+
 
 Biological knowledge did not become less important when programming became important. Scripting did not disappear when workflow managers arrived. Statistical genomics remains fundamental even as machine learning becomes more common.
 
-Instead, new capabilities were added.
+Instead, new capabilities were added. High-throughput sequencing brought new algorithms and scalable computing; increasingly complex analyses brought workflow management, version control and software-engineering practices; and newer technologies added further layers of data integration, machine learning and infrastructure.
 
-High-throughput sequencing required new algorithms and scalable computing. Increasingly complex analyses brought workflow management, version control and software-engineering practices. Reproducibility connected analysis more closely with documentation and data management. Multi-omics, single-cell and spatial technologies created new integration problems. Machine learning and deep learning added another methodological layer.
-
-As all these components became interconnected, understanding the wider computational ecosystem also became increasingly useful.
-
-The important point in the figure is that the earlier skills do not end when a new one appears.
-
-They accumulate.
+**They accumulate.**
 
 ## There is no single modern bioinformatician
 

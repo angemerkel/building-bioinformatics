@@ -1,37 +1,309 @@
 /* css styles */
 
+
+/* =========================================================
+   Blog posts
+   ========================================================= */
+
+/*
+   Keep long-form posts readable while giving technical
+   content slightly more room than the Quarto default.
+*/
+.quarto-title-block,
+main.content {
+  max-width: 780px;
+}
+
+
+/* =========================================================
+   Post header
+   ========================================================= */
+
+.quarto-title-block {
+  margin-bottom: 2.25rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid #d9e0e7;
+}
+
+
 /* ------------------------------
-   Code blocks
+   Title structure
    ------------------------------ */
 
+/* Allow title elements to be reordered */
+.quarto-title {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Categories become the eyebrow */
+.quarto-categories {
+  order: -1;
+  margin-top: 0;
+  margin-bottom: 1.4rem;
+}
+
+/* Title */
+.quarto-title .title {
+  font-size: 2.25rem;
+  line-height: 1.15;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+}
+
+/* Subtitle */
+.quarto-title .subtitle {
+  font-size: 1.15rem;
+  line-height: 1.4;
+  font-weight: 400;
+  font-style: italic;
+  color: #5f6670;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/*
+   Keep the description in the YAML for listings and metadata,
+   but do not show it in the article header.
+*/
+.quarto-title-block .description {
+  display: none;
+}
+
+
+/* ------------------------------
+   Author and date
+   ------------------------------ */
+
+.quarto-title-meta {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center;
+
+  gap: 0;
+  margin-top: 1.35rem;
+  margin-bottom: 0;
+
+  font-size: 0.82rem;
+  color: #7a8189;
+}
+
+/* Hide AUTHOR / PUBLISHED labels */
+.quarto-title-meta-heading {
+  display: none;
+}
+
+/* Keep author and date on one line */
+.quarto-title-meta > div {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  align-items: center;
+}
+
+.quarto-title-meta-contents {
+  display: inline !important;
+  width: auto !important;
+}
+
+/* Separator between author and date */
+.quarto-title-meta > div + div::before {
+  content: "·";
+  margin: 0 0.6rem;
+  color: #a0a6ad;
+}
+
+
+/* =========================================================
+   Article body
+   ========================================================= */
+
+main.content {
+  line-height: 1.65;
+}
+
+main.content p {
+  margin-bottom: 1.15rem;
+}
+
+
+/* =========================================================
+   Section headings
+   ========================================================= */
+
+/*
+   Major sections.
+
+   Padding rather than margin controls the space above the
+   heading. This gives H2 headings consistent separation
+   regardless of the element immediately before them.
+*/
+main.content h2 {
+  font-size: 1.55rem;
+  line-height: 1.25;
+  font-weight: 700;
+
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+
+  padding-top: 2.2rem;
+  padding-bottom: 0;
+
+  border-bottom: none !important;
+}
+
+/*
+   Remove the normal paragraph margin immediately before
+   an H2. The H2 itself controls the section separation.
+*/
+main.content p:has(+ h2) {
+  margin-bottom: 0;
+}
+
+/* Subsections */
+main.content h3 {
+  font-size: 1.2rem;
+  line-height: 1.35;
+  font-weight: 650;
+
+  margin-top: 2.3rem;
+  margin-bottom: 0.85rem;
+}
+
+/* =========================================================
+   Blockquotes
+   ========================================================= */
+
+main.content blockquote {
+  margin: 1.5rem 0;
+  padding: 0.45rem 0 0.45rem 1rem;
+
+  background: none;
+  border-left: 2px solid #a8b5c1;
+
+  color: #52606d;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+main.content blockquote p {
+  margin: 0;
+}
+
+/* =========================================================
+   Conceptual data paths / pseudocode
+   ========================================================= */
+
+main.content .data-path {
+  margin: 1rem 0 1.3rem;
+  padding: 0.45rem 0 0.45rem 1rem;
+
+  background: none;
+  border-left: 2px solid #a8b5c1;
+
+  font-family: var(--bs-font-monospace);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #3f4d5a;
+}
+
+main.content .data-path p {
+  margin: 0;
+}
+
+
+/* =========================================================
+   Code blocks
+   ========================================================= */
+
 pre {
-  background-color: #f6f8fb;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
+  background-color: #f6f8fa;
+  border: 1px solid #e7ebef;
+  border-radius: 3px;
   padding: 1rem 1.1rem;
 }
 
 div.sourceCode {
-  background-color: #f6f8fb;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
+  background-color: #f6f8fa;
+  border: 1px solid #e7ebef;
+  border-radius: 3px;
 }
 
 
-/* ------------------------------
+/* =========================================================
    Tables
-   ------------------------------ */
+   ========================================================= */
 
-table {
-  margin-top: 1.5rem;
+main.content table {
+  width: 100%;
+  margin-top: 1.4rem;
   margin-bottom: 2rem;
+
+  font-size: 0.95rem;
+  line-height: 1.5;
+
+  border-collapse: collapse;
 }
 
-table thead th {
-  background-color: #f6f8fb;
-  padding: 0.65rem 0.75rem;
+/* Header */
+main.content table thead th {
+  padding: 0.65rem 0.5rem;
+
+  background: none;
+  border-top: 1px solid #d9e0e7;
+  border-bottom: 1px solid #aeb7c0;
+
+  font-weight: 650;
+  text-align: left;
 }
 
-table tbody td {
-  padding: 0.65rem 0.75rem;
+/* Body */
+main.content table tbody td {
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+/* Keep first/last columns aligned with surrounding text */
+main.content table th:first-child,
+main.content table td:first-child {
+  padding-left: 0.4rem;
+}
+
+main.content table th:last-child,
+main.content table td:last-child {
+  padding-right: 0.4rem;
+}
+
+/* =========================================================
+   Figures
+   ========================================================= */
+
+main.content .wide-figure {
+  width: 1000px;
+  max-width: calc(100vw - 3rem);
+
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  margin-top: 2rem;
+  margin-bottom: 1.8rem;
+}
+
+main.content .wide-figure img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+main.content figure.wide-figure figcaption {
+  max-width: 780px;
+  margin: 0.65rem auto 0;
+
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #6f7780;
+  text-align: left;
 }
