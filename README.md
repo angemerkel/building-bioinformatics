@@ -14,7 +14,7 @@ Some posts are tutorials, some are reflections, and some are simply things I wis
 
 ## Repository Structure
 
-```text
+``` text
 building-bioinformatics/
 ├── _quarto.yml
 ├── index.qmd
@@ -48,17 +48,19 @@ I usually work on the site in RStudio.
 
 Preview the site locally:
 
-```bash
+``` bash
 quarto preview
 ```
 
 Render the full site:
 
-```bash
+``` bash
 quarto render
 ```
 
 The rendered website is written to `docs/` and published through GitHub Pages.
+
+I also use generative AI as part of the writing and development process—for discussing ideas, reviewing text, troubleshooting code, and developing figures and layouts. The content and editorial decisions remain my own.
 
 ## About the Author
 
