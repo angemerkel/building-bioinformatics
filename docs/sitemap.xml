@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://angemerkel.github.io/building-bioinformatics/posts/2026/07/A-Bioinformatics-Core-Is-More-Than-a-Cluster/index.html</loc>
+    <lastmod>2026-10-02T09:05:41.270Z</lastmod>
+  </url>
+  <url>
     <loc>https://angemerkel.github.io/building-bioinformatics/index.html</loc>
     <lastmod>2026-10-01T06:49:16.151Z</lastmod>
   </url>
@@ -13,11 +17,7 @@
     <lastmod>2026-09-30T12:45:09.787Z</lastmod>
   </url>
   <url>
-    <loc>https://angemerkel.github.io/building-bioinformatics/posts/2026/06/bioinformatics-evolved/index.html</loc>
+    <loc>https://angemerkel.github.io/building-bioinformatics/posts/2026/06/From-Scripts-To-Systems-and-Beyond/index.html</loc>
     <lastmod>2026-10-01T07:59:45.906Z</lastmod>
-  </url>
-  <url>
-    <loc>https://angemerkel.github.io/building-bioinformatics/posts/2026/06/computing-infrastructure-and-bioinformatics-workflows/index.html</loc>
-    <lastmod>2026-10-02T09:05:41.270Z</lastmod>
   </url>
 </urlset>

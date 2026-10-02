@@ -2,13 +2,67 @@
 
 
 /* =========================================================
+   Colour system
+   Same palette as the personal website
+   ========================================================= */
+
+:root {
+  --am-black: #171b1f;
+  --am-text: #30363b;
+  --am-muted: #687178;
+
+  --am-blue: #168ca5;
+  --am-blue-dark: #126d80;
+  --am-blue-soft: #e5f4f6;
+
+  --am-beige: #e8d3bd;
+  --am-beige-soft: #f7efe7;
+
+  --am-grey: #dfe3e5;
+  --am-grey-soft: #f2f3f3;
+
+  --am-orange: #e87532;
+
+  --am-line: #d9dee1;
+  --am-white: #ffffff;
+}
+
+
+/* =========================================================
+   Global
+   ========================================================= */
+
+body {
+  color: var(--am-text);
+  background: var(--am-white);
+}
+
+
+/* =========================================================
+   Site links and navigation
+   ========================================================= */
+
+main.content a {
+  color: var(--am-blue-dark);
+}
+
+main.content a:hover {
+  color: var(--am-blue);
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--am-blue-dark) !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--am-blue) !important;
+}
+
+
+/* =========================================================
    Blog posts
    ========================================================= */
 
-/*
-   Keep long-form posts readable while giving technical
-   content slightly more room than the Quarto default.
-*/
 .quarto-title-block,
 main.content {
   max-width: 780px;
@@ -22,7 +76,7 @@ main.content {
 .quarto-title-block {
   margin-bottom: 2.25rem;
   padding-bottom: 1.4rem;
-  border-bottom: 1px solid #d9e0e7;
+  border-bottom: 1px solid rgba(22, 140, 165, 0.4);
 }
 
 
@@ -30,7 +84,6 @@ main.content {
    Title structure
    ------------------------------ */
 
-/* Allow title elements to be reordered */
 .quarto-title {
   display: flex;
   flex-direction: column;
@@ -45,9 +98,12 @@ main.content {
 
 /* Title */
 .quarto-title .title {
+  color: var(--am-black);
+
   font-size: 2.25rem;
   line-height: 1.15;
   font-weight: 700;
+
   margin-top: 0;
   margin-bottom: 0.35rem;
 }
@@ -58,7 +114,9 @@ main.content {
   line-height: 1.4;
   font-weight: 400;
   font-style: italic;
-  color: #5f6670;
+
+  color: var(--am-muted);
+
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -86,15 +144,13 @@ main.content {
   margin-bottom: 0;
 
   font-size: 0.82rem;
-  color: #7a8189;
+  color: var(--am-muted);
 }
 
-/* Hide AUTHOR / PUBLISHED labels */
 .quarto-title-meta-heading {
   display: none;
 }
 
-/* Keep author and date on one line */
 .quarto-title-meta > div {
   display: inline-flex !important;
   flex: 0 0 auto !important;
@@ -111,7 +167,17 @@ main.content {
 .quarto-title-meta > div + div::before {
   content: "·";
   margin: 0 0.6rem;
-  color: #a0a6ad;
+  color: var(--am-muted);
+}
+
+
+/* ------------------------------
+   Article categories
+   ------------------------------ */
+
+.quarto-title-block .quarto-categories .quarto-category {
+  color: var(--am-orange) !important;
+  border-color: rgba(232, 117, 50, 0.5) !important;
 }
 
 
@@ -128,19 +194,13 @@ main.content p {
 }
 
 
-
 /* =========================================================
    Section headings
    ========================================================= */
 
-/*
-   Major sections.
-
-   Padding rather than margin controls the space above the
-   heading. This gives H2 headings consistent separation
-   regardless of the element immediately before them.
-*/
 main.content h2 {
+  color: var(--am-black);
+
   font-size: 1.55rem;
   line-height: 1.25;
   font-weight: 700;
@@ -154,16 +214,14 @@ main.content h2 {
   border-bottom: none !important;
 }
 
-/*
-   Remove the normal paragraph margin immediately before
-   an H2. The H2 itself controls the section separation.
-*/
 main.content p:has(+ h2) {
   margin-bottom: 0;
 }
 
 /* Subsections */
 main.content h3 {
+  color: var(--am-black);
+
   font-size: 1.2rem;
   line-height: 1.35;
   font-weight: 650;
@@ -182,9 +240,9 @@ main.content blockquote {
   padding: 0.45rem 0 0.45rem 1rem;
 
   background: none;
-  border-left: 2px solid #a8b5c1;
+  border-left: 2px solid var(--am-grey);
 
-  color: #52606d;
+  color: var(--am-muted);
   font-size: 1rem;
   line-height: 1.55;
 }
@@ -203,12 +261,12 @@ main.content .data-path {
   padding: 0.45rem 0 0.45rem 1rem;
 
   background: none;
-  border-left: 2px solid #a8b5c1;
+  border-left: 2px solid var(--am-grey);
 
   font-family: var(--bs-font-monospace);
   font-size: 0.92rem;
   line-height: 1.5;
-  color: #3f4d5a;
+  color: var(--am-text);
 }
 
 main.content .data-path p {
@@ -221,15 +279,15 @@ main.content .data-path p {
    ========================================================= */
 
 pre {
-  background-color: #f6f8fa;
-  border: 1px solid #e7ebef;
+  background-color: var(--am-grey-soft);
+  border: 1px solid var(--am-grey);
   border-radius: 3px;
   padding: 1rem 1.1rem;
 }
 
 div.sourceCode {
-  background-color: #f6f8fa;
-  border: 1px solid #e7ebef;
+  background-color: var(--am-grey-soft);
+  border: 1px solid var(--am-grey);
   border-radius: 3px;
 }
 
@@ -254,8 +312,8 @@ main.content table thead th {
   padding: 0.65rem 0.5rem;
 
   background: none;
-  border-top: 1px solid #d9e0e7;
-  border-bottom: 1px solid #aeb7c0;
+  border-top: 1px solid var(--am-line);
+  border-bottom: 1px solid var(--am-grey);
 
   font-weight: 650;
   text-align: left;
@@ -264,10 +322,9 @@ main.content table thead th {
 /* Body */
 main.content table tbody td {
   padding: 0.65rem 0.5rem;
-  border-bottom: 1px solid #e1e5e9;
+  border-bottom: 1px solid var(--am-line);
 }
 
-/* Keep first/last columns aligned with surrounding text */
 main.content table th:first-child,
 main.content table td:first-child {
   padding-left: 0.4rem;
@@ -308,7 +365,7 @@ main.content figure.wide-figure figcaption {
 
   font-size: 0.88rem;
   line-height: 1.5;
-  color: #6f7780;
+  color: var(--am-muted);
   text-align: left;
 }
 
@@ -320,6 +377,8 @@ main.content figure.figure > p {
 main.content figure.figure figcaption {
   margin-top: 0.15rem;
 }
+
+
 /* =========================================================
    References / appendix
    ========================================================= */
@@ -329,14 +388,11 @@ main.content #quarto-appendix {
   padding-top: 2.5rem !important;
 }
 
+
 /* =========================================================
    Home page / latest posts
    ========================================================= */
 
-/*
-   Keep the homepage aligned with the long-form posts,
-   but give the listing a simpler editorial structure.
-*/
 .home-page main.content {
   max-width: 780px;
 }
@@ -346,9 +402,9 @@ main.content #quarto-appendix {
    Home page title
    ------------------------------ */
 
-/* Clear separation between site title and subtitle */
 .home-page .quarto-title .title {
   margin-bottom: 0;
+  color: var(--am-black);
 }
 
 .home-page .quarto-title .subtitle {
@@ -371,14 +427,12 @@ main.content #quarto-appendix {
    Listing
    ------------------------------ */
 
-/* Remove the default two-column listing structure */
 .home-page .quarto-listing-default .quarto-post {
   display: block;
   padding: 1.35rem 0 1.5rem;
-  border-bottom: 1px solid #e1e5e9;
+  border-bottom: 1px solid var(--am-line);
 }
 
-/* Avoid unnecessary space above the first post */
 .home-page .quarto-listing-default .quarto-post:first-child {
   padding-top: 0;
 }
@@ -397,11 +451,12 @@ main.content #quarto-appendix {
 }
 
 .home-page .quarto-listing-default .listing-title a {
-  color: #30343b;
+  color: var(--am-blue-dark) !important;
   text-decoration: none;
 }
 
 .home-page .quarto-listing-default .listing-title a:hover {
+  color: var(--am-blue) !important;
   text-decoration: underline;
 }
 
@@ -414,9 +469,13 @@ main.content #quarto-appendix {
   margin: 0 0 0.65rem;
 }
 
-.home-page .quarto-listing-default .listing-category {
+.home-page .quarto-listing-default
+.listing-categories .listing-category {
   font-size: 0.72rem;
   line-height: 1.2;
+
+  color: var(--am-orange) !important;
+  border-color: rgba(232, 117, 50, 0.5) !important;
 }
 
 
@@ -424,12 +483,13 @@ main.content #quarto-appendix {
    Description
    ------------------------------ */
 
-.home-page .quarto-listing-default .listing-description {
+.home-page .quarto-listing-default .listing-description,
+.home-page .quarto-listing-default .listing-description a {
   margin-top: 0;
 
   font-size: 0.95rem;
   line-height: 1.55;
-  color: #4f5963;
+  color: var(--am-text);
 }
 
 .home-page .quarto-listing-default .listing-description p {
@@ -441,12 +501,14 @@ main.content #quarto-appendix {
    Date
    ------------------------------ */
 
-.home-page .quarto-listing-default .metadata {
+.home-page .quarto-listing-default .metadata,
+.home-page .quarto-listing-default .metadata a,
+.home-page .quarto-listing-default .listing-date {
   margin-top: 0.55rem;
 
   font-size: 0.8rem;
   line-height: 1.4;
-  color: #7a8189;
+  color: var(--am-muted);
 }
 
 .home-page .quarto-listing-default .listing-date {
@@ -457,17 +519,6 @@ main.content #quarto-appendix {
 /* =========================================================
    Blog archive
    ========================================================= */
-
-/*
-   The Blog page is the full archive. Keep the category
-   navigation, but simplify individual entries so the title
-   and article content are the main visual elements.
-*/
-
-
-/* ------------------------------
-   Page layout
-   ------------------------------ */
 
 .blog-page main.content {
   max-width: none;
@@ -494,10 +545,9 @@ main.content #quarto-appendix {
   row-gap: 0;
 
   padding: 1.5rem 0 1.7rem;
-  border-bottom: 1px solid #e1e5e9;
+  border-bottom: 1px solid var(--am-line);
 }
 
-/* First entry starts directly below the page heading */
 .blog-page .quarto-listing-default .quarto-post:first-child {
   padding-top: 1.25rem;
 }
@@ -513,7 +563,10 @@ main.content #quarto-appendix {
 }
 
 
-/* Title */
+/* ------------------------------
+   Post title
+   ------------------------------ */
+
 .blog-page .quarto-listing-default .listing-title {
   margin: 0 0 0.4rem;
 
@@ -523,43 +576,59 @@ main.content #quarto-appendix {
 }
 
 .blog-page .quarto-listing-default .listing-title a {
-  color: #30343b;
+  color: var(--am-blue-dark) !important;
   text-decoration: none;
 }
 
 .blog-page .quarto-listing-default .listing-title a:hover {
+  color: var(--am-blue) !important;
   text-decoration: underline;
 }
 
 
-/* Subtitle */
-.blog-page .quarto-listing-default .listing-subtitle {
+/* ------------------------------
+   Subtitle
+   ------------------------------ */
+
+.blog-page .quarto-listing-default .listing-subtitle,
+.blog-page .quarto-listing-default .listing-subtitle a {
   margin: 0 0 0.65rem;
 
   font-size: 0.95rem;
   line-height: 1.5;
-  color: #4f5963;
+  color: var(--am-text);
 }
 
 
-/* Categories */
+/* ------------------------------
+   Categories
+   ------------------------------ */
+
 .blog-page .quarto-listing-default .listing-categories {
   margin: 0 0 0.8rem;
 }
 
-.blog-page .quarto-listing-default .listing-category {
+.blog-page .quarto-listing-default
+.listing-categories .listing-category {
   font-size: 0.72rem;
   line-height: 1.2;
+
+  color: var(--am-orange) !important;
+  border-color: rgba(232, 117, 50, 0.5) !important;
 }
 
 
-/* Description */
-.blog-page .quarto-listing-default .listing-description {
+/* ------------------------------
+   Description
+   ------------------------------ */
+
+.blog-page .quarto-listing-default .listing-description,
+.blog-page .quarto-listing-default .listing-description a {
   margin: 0;
 
   font-size: 0.95rem;
   line-height: 1.55;
-  color: #4f5963;
+  color: var(--am-text);
 }
 
 .blog-page .quarto-listing-default .listing-description p {
@@ -571,17 +640,17 @@ main.content #quarto-appendix {
    Date / metadata
    ------------------------------ */
 
-.blog-page .quarto-listing-default .metadata {
+.blog-page .quarto-listing-default .metadata,
+.blog-page .quarto-listing-default .metadata a {
   grid-area: metadata;
 
   margin-top: 0.65rem;
 
   font-size: 0.8rem;
   line-height: 1.4;
-  color: #7a8189;
+  color: var(--am-muted);
 }
 
-/* Hide author in archive listing */
 .blog-page .quarto-listing-default .listing-author {
   display: none;
 }
@@ -635,13 +704,9 @@ main.content #quarto-appendix {
    About page
    ========================================================= */
 
-/*
-   The About page uses the same reading width and typography
-   as the rest of the site, but needs slightly tighter section
-   spacing than long-form posts.
-*/
-
 .about-page main.content h2 {
+  color: var(--am-black);
+
   font-size: 1.45rem;
   line-height: 1.3;
   font-weight: 700;
