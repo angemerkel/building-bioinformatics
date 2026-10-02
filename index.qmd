@@ -12,7 +12,7 @@ listing:
 
 Bioinformatics has long since become more than just analysing biological data. Building and maintaining workflows, software, infrastructure, and data systems is now an integral part of the discipline and of modern computational research.
 
-*Building Bioinformatics* is where I explore this side of computational biology: the engineering behind the analysis. It is a place to put into writing things I have observed or been thinking about, revisit things I have learned along the way, and go deeper into topics I want to understand better.
+*Building Bioinformatics* is where I explore this side of computational biology: the engineering behind the analysis. It is my place to put into writing things I have observed or been thinking about, revisit things I have learned along the way, and go deeper into topics I want to understand better.
 
 The idea is not to focus only on individual tools, but on understanding how the different pieces fit together — and how to build computational research environments that are useful, reproducible, maintainable, and sustainable.
 

@@ -1,0 +1,182 @@
+---
+title: "A Bioinformatics Core Is More Than a Cluster"
+subtitle: "The real challenge is building a sustainable bioinformatics ecosystem."
+description: "A practical look at the infrastructure behind modern bioinformatics, from data ingestion and storage to workflow orchestration, reproducibility, and platform engineering."
+date: 2026-07-16
+author: "Angelika Merkel"
+categories:
+  - Bioinformatics
+  - Research Computing
+  - Infrastructure
+bibliography: ../../../../references.bib
+link-citations: true
+draft: false
+---
+
+When people think about scientific computing infrastructure, they often think first about the compute cluster: CPUs, GPUs, storage capacity. But over the years, especially while running a bioinformatics core facility, I have come to think that the real challenge is not simply computing power and storage. It is designing an ecosystem where data, workflows, and users all fit together coherently.
+
+The challenge is no longer simply:
+
+> “Can we analyse this dataset?”
+
+but increasingly:
+
+> “Can we build a sustainable, reproducible, scalable ecosystem that allows many analyses, many users, and many projects to coexist efficiently over time?”
+
+A modern bioinformatics core facility is no longer just a collection of Linux servers running analysis pipelines. It increasingly resembles a small scientific platform engineering organisation, bringing together aspects of IT infrastructure, DevOps, software engineering, HPC, data management, scientific consulting, and statistical analysis. Unfortunately, in my experience both the range and the amount of work involved are still often underestimated, with teams of three or four people expected to cover all of these areas.
+
+In this post I want to sketch out what I believe is a practical architecture for a modern bioinformatics core facility, including networks, data flow, computation, interactive analysis and reporting, and explain how a typical workflow — differential gene expression analysis from raw sequencing data to final report — fits into that infrastructure. The architecture I describe here is based mainly on a local, institutional HPC environment. Cloud and hybrid environments introduce additional architectural considerations and are outside the scope of this post.
+
+Ultimately, this is less about individual technologies and more about how data, workflows, infrastructure, reproducibility and collaboration come together in a sustainable bioinformatics environment.
+
+## Networks — the separation of concerns
+
+Like most enterprise computing infrastructure, research computing infrastructure is usually distributed across multiple network segments (VLANs or subnets) to separate different types of traffic, responsibilities, and risks (see [@chandramouli2022] for an overview of enterprise network architecture).
+
+![**Figure 1. Example network architecture for a bioinformatics research environment.** External data enter through a controlled DMZ/transfer network, while internal user, compute, storage, instrument and management networks separate different types of traffic and infrastructure.](images/network-architecture.png)
+
+This separation is not just about security. It is also about performance and operational stability.
+
+It is useful to make a distinction between the network architecture itself and the services that run on top of it. The different VLANs separate parts of the infrastructure and control how they communicate, but they do not necessarily map directly to the services researchers actually use. Interactive analysis environments, databases, workflow and CI/CD systems, or services for sharing and publishing results may all use several parts of the underlying infrastructure.
+
+The network provides the foundation, while the services running on top of it connect the different pieces into something researchers can actually use.
+
+Any bioinformatics workflow needs to adapt to the constraints of the infrastructure while making effective use of the available compute, storage, and network resources.
+
+## The data path
+
+Most analyses start long before the first computational job is submitted: data first has to enter the infrastructure.
+
+Large data sets should generally not follow this path:
+
+::: data-path
+Internet → laptop → project storage
+:::
+
+Instead they should flow like this:
+
+::: data-path
+Internet → DMZ transfer node → validated ingest → project storage
+:::
+
+The demilitarised zone — or DMZ for short — is a separate network segment that acts as a controlled buffer between the outside world and the private institutional network. It is tightly controlled by firewall rules and is key to information security. This is where tools such as `Aspera`, `SFTP`, `wget` or `curl` can be used for external data transfers, together with checksum validation of downloaded data.
+
+The transfer node acts as a controlled gateway and is connected to the project storage, either directly or via a staging area. The transfer tools themselves should be run on the node.
+
+To illustrate this, here is an example sequence download from the European Nucleotide Archive (ENA) using `wget` [@enaFileDownload]:
+
+``` bash
+# Login to transfer node
+ssh -i \~/.ssh/id_ed25519 username\@transfer01.institute.org
+
+# Then run the transfer tool
+wget \
+  -P /dmz/ingest/PROJECT_X/ \
+  https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR123/ERR123456/ERR123456_1.fastq.gz
+
+# Then validate:
+md5sum -c checksums.md5
+
+# Finally, move from staging area to project storage:
+rsync -avP \
+  /dmz/ingest/PROJECT_X/ \
+  /data/projects/PROJECT_X/raw/
+```
+
+Datasets can be extremely large, so it is vital to use the **appropriate transfer protocol** and ensure that enough space is available both in the staging area and in project storage.
+
+| Use case                      | Typical tool    |
+|-------------------------------|-----------------|
+| Small files and references    | `wget` / `curl` |
+| Public datasets               | `wget` / `curl` |
+| Large sequencing datasets     | Aspera          |
+| Collaborator exchange         | SFTP            |
+| Institutional synchronisation | `rsync`         |
+
+## Persistent storage and scratch
+
+Once data have been ingested, attention shifts to computation and storage.
+
+In high-performance computing (HPC), persistent storage and temporary compute storage serve very different purposes.
+
+**Persistent project storage** contains raw data (e.g. FASTQs), references, metadata, final outputs, and reports. This storage is collaborative, long-lived, and typically protected through backup or other data-protection mechanisms. Infrastructure design often separates **immutable data**, such as raw sequencing data with read-only access, from **active project data** such as analyses, results, reports, and notebooks with full read/write access.
+
+Compute workflows, on the other hand, generate enormous amounts of **temporary data** such as alignment intermediates, sorting chunks, caches, decompression artefacts, and other transient files. Writing all of this directly to shared project storage can quickly overload the filesystem and significantly impact performance for other users and workflows.
+
+The standard solution is to perform heavy intermediate computation on dedicated scratch storage, which is optimised for high I/O performance and, in some architectures, attached directly to the compute nodes (see, for example, [@lumiStorage; @cinecaStorage]).
+
+![**Figure 2. Persistent storage and scratch serve different roles during computation.** Workflows stage input data, use high-performance scratch for temporary and intermediate files, save persistent outputs back to project storage, and clean up temporary data after execution.](images/persistent-storage-and-scratch-workflow.png)
+
+In practice, workflows often stage or temporarily copy raw data onto scratch storage before computation starts. Here, login nodes act as the entry point by providing access to mounted project storage together with scheduler access (e.g. [Slurm](https://slurm.schedmd.com/)). Scratch storage itself may either be mounted cluster-wide or exist as node-local storage attached directly to individual compute nodes. Unlike persistent project storage, scratch storage is usually temporary and not backed up. Workflows should therefore clean up temporary files once they are no longer needed, while many HPC systems also apply automatic purge policies that remove files from scratch after a defined period.
+
+## Workflow orchestration and reproducibility
+
+As expectations around FAIR data, reproducibility, and quality management increase, bioinformatics facilities increasingly need to treat workflows as maintained computational infrastructure rather than collections of ad-hoc scripts [@wilkinson2016]. This brings services such as version control, CI/CD, container registries and workflow orchestration into the infrastructure as well, alongside reproducible environments, automated testing and provenance tracking. Pipelines — both software and analysis workflows — increasingly become institutional computational assets that must be maintained, versioned, validated, documented, and reproducibly deployable across projects and users.
+
+Workflows themselves should be version controlled (e.g. using [Git](https://git-scm.com/)) and hosted in systems such as [GitLab](https://gitlab.com/), [GitHub](https://github.com/), or lightweight self-hosted alternatives like [Gitea](https://about.gitea.com/), while the actual computation is orchestrated through [Slurm](https://slurm.schedmd.com/), containers (e.g. [Docker](https://www.docker.com/) or [Apptainer](https://apptainer.org/), formerly Singularity), and workflow managers such as [Nextflow](https://www.nextflow.io/) [@ditommaso2017] or [Snakemake](https://snakemake.github.io/) [@koster2012].
+
+![**Figure 3. From workflow development to reproducible execution.** Analysis workflows are retrieved, adapted and configured for a specific project, packaged with their computational environment, and deployed to HPC as part of a versioned, reproducible and traceable lifecycle.](images/versioning-and-reproducibility.png)
+
+Internal GitLab or Gitea instances can be tightly integrated with the computational infrastructure, CI/CD pipelines, container registries, and job submission environment. At the same time, external platforms such as GitHub increasingly play an important role for open-source development, community contributions, public releases, documentation, and long-term sustainability of scientific software beyond individual institutes or projects.
+
+Similarly, mature ecosystems already exist for sharing containers and standardised workflows, such as [Docker Hub](https://hub.docker.com/) for container images and [nf-core](https://nf-co.re/) for reusable and standardised Nextflow pipelines [@ewels2020].
+
+Here is where a substantial change in mindset takes place. A bioinformatics unit no longer simply “runs analyses”. **It maintains a reproducible computational ecosystem.**
+
+## Interactive analysis
+
+Not every part of bioinformatics, however, can or should be turned into an automated workflow. Data still need to be explored, results inspected, code developed, and analyses adapted. Interactive analysis also needs its place within the computational infrastructure. One of the biggest architectural shifts in recent years has been the move away from “desktop-centric” bioinformatics.
+
+Traditionally, institutional storage used to be directly mounted to users' laptops or desktops, and users worked locally using IDEs connected to remote systems, particularly for data exploration and visualisation. While functional, this model often involves large data movement, dependency conflicts, inconsistent environments, and increasingly complicated support requirements. (Remember how IT sometimes needed weeks to catch up installing all your favourite R packages locally.)
+
+More and more institutes are therefore moving interactive analysis into the research computing infrastructure itself, using platforms such as [JupyterHub](https://jupyter.org/hub), [RStudio Server/Posit Workbench](https://posit.co/products/open-source/rstudio-server/), [Visual Studio Code](https://code.visualstudio.com/), and [Open OnDemand](https://openondemand.org/). These environments give users direct access to compute and storage resources without having to move the data to their local machines. The actual analysis may run on HPC compute nodes, for example through Slurm, while accessing the same shared institutional storage used by automated workflows.
+
+![**Figure 4. Bringing interactive analysis closer to the data.** Interactive analysis environments connect users to shared storage and compute resources while keeping data and computational environments within the managed infrastructure.](images/interactive-analysis.png)
+
+How users access these environments can vary. Some are browser-based, while others use a local client connected to a remote system. The important shift is that the computation itself no longer has to happen on the user's machine, but becomes part of the managed research computing environment.
+
+This has several practical advantages. Data movement is reduced, dependency conflicts become easier to control, onboarding of new users is simplified, reproducibility improves, and security governance becomes considerably more manageable. At the same time, users no longer require powerful local workstations simply to interact with large data sets.
+
+Most importantly, the data itself largely remains inside the institutional infrastructure. Instead of transferring entire data sets to individual machines, what usually crosses to the user's device are rendered plots, notebook outputs, terminal streams, dashboards, and final reports. In many ways, computation increasingly moves to where the data already lives rather than the other way around.
+
+Cloud-based research workbenches extend the same idea further. Platforms such as [Terra](https://terra.bio/) and cloud-hosted Jupyter environments bring data, compute, workflows and interactive analysis into a shared environment without requiring the underlying infrastructure to be hosted locally.
+
+## The hidden role of the management network
+
+Some of the services that keep this infrastructure running are largely invisible to researchers. Authentication, monitoring, logging, scheduler controllers, configuration management, backup orchestration and, increasingly, CI/CD all operate in the background and are often associated with the management network. While scientific data mainly flow between storage, compute, and interactive analysis environments, the management network coordinates and supervises the entire ecosystem. In many ways, it functions as the nervous system of the infrastructure.
+
+Management of this layer is often split between traditional IT teams and scientific computing teams. These teams may come from quite different backgrounds and have developed around different requirements. Enterprise IT typically emphasises stability, security, standardisation, and maintainability, while scientific computing has grown around the changing computational needs of research.
+
+In my experience, this can create a cultural gap between traditional IT and scientific computing. Traditional IT is primarily concerned with building robust, stable, highly secure, and preferably immutable infrastructure. Scientific computing, on the other hand, is part of the research process itself, where the goal is often to experiment, rapidly implement new approaches, and maintain flexibility and scalability.
+
+Neither perspective is wrong, but they optimise for different things. Bridging these different mindsets ultimately becomes a human problem rather than a purely technical one, and good communication and interoperability between the teams are crucial for building sustainable scientific infrastructure.
+
+## Sharing results and collaborative outputs
+
+Finally, the results produced by these workflows have to be reviewed, shared and communicated. Nowadays, bioinformatics workflows produce more than static result files. Reports, dashboards, notebooks, and interactive visualisations are often made available to collaborators through internal web services, HTML reports, Quarto websites, or lightweight analysis portals.
+
+These form another set of services around the computational infrastructure. Some provide access to the data itself, while others provide ways to explore, communicate and share the results. Rather than transferring large datasets between collaborators, processed outputs, rendered visualisations, notebook sessions, and reproducible reports can be made available directly from within the infrastructure.
+
+Databases and data platforms play an important role here. They can store structured metadata, processed results, project information, and searchable knowledge resources. While project storage manages the underlying files, these **data services** make information queryable, discoverable, and easier to integrate into dashboards, portals, APIs, and other collaborative environments.
+
+Finally, **publication services** provide a way of making selected results available beyond the immediate computational environment. For external collaborators, this might be through authenticated web portals, reverse proxies, or lightweight publication layers sitting between the internal infrastructure and the outside world. Importantly, collaborators can interact with processed outputs, dashboards, notebooks, and reports without having to interact with the computational infrastructure behind them.
+
+![**Figure 5. From computation to collaboration.** A conceptual view of the layers that connect computational analyses with the environments through which results can be explored and shared.](images/sharing-results-and-collaborative-outputs.png)
+
+This part of the infrastructure is often underestimated, yet it is arguably just as important as the compute and storage infrastructure behind it. Science that cannot be communicated, shared, explored, or reproduced is effectively invisible and, in many ways, practically non-existent. Computational workflows therefore no longer end with finished analyses, but with reproducible, accessible, and collaborative outputs that allow scientific results to be interpreted, discussed, validated, and ultimately built upon by others.
+
+## Putting it all together
+
+A typical RNA-seq differential expression workflow (here based on the [nf-core/rnaseq](https://nf-co.re/rnaseq/) pipeline [@ewels2020]) illustrates how the different parts of the infrastructure connect in practice.
+
+![**Figure 6. Connecting the infrastructure in practice.** Data move from ingestion and persistent storage through workflow execution and temporary compute storage to processed results and reports.](images/example-workflow-gene-expression.png){width="80%"}
+
+## Final thoughts: Infrastructure as part of the scientific method
+
+Modern bioinformatics infrastructure is becoming less about individual hardware or tools and more about building sustainable computational ecosystems that allow science itself to scale. The difficulty, in my experience, lies in the practical implementation. FAIR data practices are now widely accepted, but because much of the infrastructure that supports them operates in the background — often invisible to researchers — the time and, importantly, the staff required to build, operate and maintain these systems are frequently underestimated and consequently under-supported.
+
+The same is true for version control, reproducible computational environments, and the use of local and remote repositories. These are widely accepted as good practice, yet implementing and maintaining them takes time. The additional overhead can be substantial, particularly for small bioinformatics teams, and as a result implementation often falls behind what we know should be done.
+
+The way forward, I believe, requires a change of culture, both among those who benefit from bioinformatics support and those who administratively and financially support it. Without that cultural shift, bioinformatics infrastructure risks continuing to be treated as a secondary support function rather than as part of the scientific process itself.
+
+**Good infrastructure is often invisible when it works well, and increasingly, modern science depends on it.**

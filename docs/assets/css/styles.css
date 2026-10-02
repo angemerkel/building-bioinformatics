@@ -128,6 +128,7 @@ main.content p {
 }
 
 
+
 /* =========================================================
    Section headings
    ========================================================= */
@@ -303,7 +304,7 @@ main.content .wide-figure img {
 
 main.content figure.wide-figure figcaption {
   max-width: 780px;
-  margin: 0.65rem auto 0;
+  margin: 0.25rem auto 0;
 
   font-size: 0.88rem;
   line-height: 1.5;
@@ -311,6 +312,22 @@ main.content figure.wide-figure figcaption {
   text-align: left;
 }
 
+/* Keep figure captions visually attached to the image */
+main.content figure.figure > p {
+  margin-bottom: 0;
+}
+
+main.content figure.figure figcaption {
+  margin-top: 0.15rem;
+}
+/* =========================================================
+   References / appendix
+   ========================================================= */
+
+main.content #quarto-appendix {
+  margin-top: 4rem !important;
+  padding-top: 2.5rem !important;
+}
 
 /* =========================================================
    Home page / latest posts
